@@ -44,7 +44,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	global := router.Group("/global")
 	{
 		global.GET("/tasks", h.GetAllTasks)
-		global.POST("/task", h.GetTaskById)
+		global.GET("/task", h.GetTaskById)
 	}
 	return router
 }
