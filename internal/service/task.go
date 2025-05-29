@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 )
@@ -14,6 +15,7 @@ func NewTaskService(repo repository.Task) *TaskService {
 }
 
 func (s *TaskService) CreateTask(task model.Task) error {
+	task.ID = uuid.Must(uuid.NewV4()).String()
 	return s.repo.CreateTask(task)
 }
 

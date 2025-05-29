@@ -1,7 +1,7 @@
 package model
 
 type User struct {
-	ID         string `gorm:"primaryKey;type:uuid;default:gen_random_uuid()" json:"id"`
+	ID         string `gorm:"primaryKey;unique" json:"id"`
 	Login      string `gorm:"unique;not null" json:"login"`
 	Password   string `gorm:"not null" json:"password"`
 	Company    string `gorm:"not null" json:"company"`

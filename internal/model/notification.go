@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Notification struct {
-	ID      string    `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()" json:"id"`
+	ID      string    `gorm:"primaryKey;unique" json:"id"`
 	Title   string    `gorm:"not null" json:"title"`
 	Message string    `gorm:"not null" json:"message"`
 	Date    time.Time `gorm:"not null" json:"date"`

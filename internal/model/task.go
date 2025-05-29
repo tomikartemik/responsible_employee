@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Task struct {
-	ID           string    `gorm:"primaryKey;type:uuid;default:gen_random_uuid()" json:"id"`
+	ID           string    `gorm:"primaryKey;unique" json:"id"`
 	Violation    string    `gorm:"not null" json:"violation"`
 	Description  string    `gorm:"not null" json:"description"`
 	Suggestion   string    `gorm:"not null" json:"suggestion"`

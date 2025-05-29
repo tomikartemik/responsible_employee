@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/utils"
@@ -18,6 +19,7 @@ func NewUserService(repo repository.User) *UserService {
 
 func (s *UserService) SignUp(userData model.User) error {
 	userData.Password = utils.GeneratePasswordHash(userData.Password)
+	userData.ID = uuid.Must(uuid.NewV4()).String()
 	return s.repo.SignUp(userData)
 }
 
