@@ -32,7 +32,7 @@ func (r *TaskRepository) GetAllTasks() ([]model.Task, error) {
 func (r *TaskRepository) TaskByID(taskID string) (model.Task, error) {
 	var task model.Task
 
-	err := r.db.First(&task, taskID).Error
+	err := r.db.Where("id = ?", taskID).First(&task).Error
 	if err != nil {
 		return model.Task{}, err
 	}

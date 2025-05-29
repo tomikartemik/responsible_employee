@@ -24,9 +24,9 @@ func (s *TaskService) GetAllTasks() ([]model.Task, error) {
 }
 
 func (s *TaskService) TaskByID(taskID string) (model.Task, error) {
-	records, err := s.repo.TaskByID(taskID)
+	task, err := s.repo.TaskByID(taskID)
 	if err != nil {
 		return model.Task{}, err
 	}
-	return records, nil
+	return task, nil
 }
