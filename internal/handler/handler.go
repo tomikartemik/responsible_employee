@@ -34,6 +34,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		user.POST("/sign-up", h.SignUp)
 		user.POST("/sign-in", h.SignIn)
+		user.GET("/leaders", h.GetUsersSortedByPoints)
 	}
 
 	task := router.Group("/task", h.UserIdentity)

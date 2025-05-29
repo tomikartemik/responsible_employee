@@ -23,6 +23,7 @@ type User interface {
 	GetUserByID(userID string) (model.User, error)
 	GetUserByUsername(username string) (model.User, error)
 	ChangePassword(userID string, password string) error
+	GetUsersSortedByPoints() ([]model.User, error)
 }
 
 type Task interface {

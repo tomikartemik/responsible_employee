@@ -20,6 +20,9 @@ func NewUserService(repo repository.User) *UserService {
 func (s *UserService) SignUp(userData model.User) error {
 	userData.Password = utils.GeneratePasswordHash(userData.Password)
 	userData.ID = uuid.Must(uuid.NewV4()).String()
+	userData.Points = 0
+	userData.MaxPoints = 0
+	userData.Rank = 0
 	return s.repo.SignUp(userData)
 }
 
@@ -66,4 +69,19 @@ func (s *UserService) ChangePassword(userID string, password, newPassword string
 	}
 
 	return nil
+}
+
+func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
+	tableInfo := []model.UserInfoTable{}
+	users, err := s.repo.GetUsersSortedByPoints()
+
+	if err != nil {
+		return tableInfo, err
+	}
+
+	for _, user := range users {
+		tableInfo = append(tableInfo, model.UserInfoTable{ID: user.ID, Login: user.Login, Image: user.Image, Points: user.Points})
+	}
+
+	return tableInfo, nil
 }

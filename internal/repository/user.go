@@ -56,3 +56,12 @@ func (r *UserRepository) GetUserByUsername(username string) (model.User, error) 
 func (r *UserRepository) ChangePassword(userID string, password string) error {
 	return r.db.Model(&model.User{}).Where("id = ?", userID).Update("password", password).Error
 }
+
+func (r *UserRepository) GetUsersSortedByPoints() ([]model.User, error) {
+	var users []model.User
+	if err := r.db.Order("points DESC").Find(&users).Error; err != nil {
+		return nil, errors.New("Не удалось получить список пользователей")
+	}
+
+	return users, nil
+}

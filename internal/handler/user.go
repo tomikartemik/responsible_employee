@@ -52,3 +52,13 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, user)
 }
+
+func (h *Handler) GetUsersSortedByPoints(c *gin.Context) {
+	users, err := h.services.GetUsersSortedByPoints()
+
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, users)
+}
