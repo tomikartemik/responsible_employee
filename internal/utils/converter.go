@@ -17,3 +17,12 @@ func UserToUserOutput(user model.User) model.UserOutput {
 		Rank:       user.Rank,
 	}
 }
+
+func TaskToTaskShortInfo(task model.Task) model.TasksShortInfo {
+	return model.TasksShortInfo{
+		ID:        task.ID,
+		Violation: task.Violation,
+		Points:    task.Points,
+		TimeLeft:  task.TimeLeft,
+	}
+}

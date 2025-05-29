@@ -4,6 +4,7 @@ import (
 	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
+	"responsible_employee/internal/utils"
 )
 
 type TaskService struct {
@@ -19,8 +20,19 @@ func (s *TaskService) CreateTask(task model.Task) error {
 	return s.repo.CreateTask(task)
 }
 
-func (s *TaskService) GetAllTasks() ([]model.Task, error) {
-	return s.repo.GetAllTasks()
+func (s *TaskService) GetAllTasks() ([]model.TasksShortInfo, error) {
+	tasks, err := s.repo.GetAllTasks()
+
+	if err != nil {
+		return []model.TasksShortInfo{}, err
+	}
+
+	taskShortInfo := make([]model.TasksShortInfo, 0)
+	for _, task := range tasks {
+		taskShortInfo = append(taskShortInfo, utils.TaskToTaskShortInfo(task))
+	}
+
+	return taskShortInfo, nil
 }
 
 func (s *TaskService) TaskByID(taskID string) (model.Task, error) {
