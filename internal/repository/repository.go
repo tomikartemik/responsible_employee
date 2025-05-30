@@ -24,10 +24,12 @@ type User interface {
 	GetUserByUsername(username string) (model.User, error)
 	ChangePassword(userID string, password string) error
 	GetUsersSortedByPoints() ([]model.User, error)
+	UpdateUserPoints(userID string, points int) error
 }
 
 type Task interface {
 	CreateTask(task model.Task) error
 	GetAllTasks() ([]model.Task, error)
 	TaskByID(taskID string) (model.Task, error)
+	CompleteTask(taskID string) error
 }

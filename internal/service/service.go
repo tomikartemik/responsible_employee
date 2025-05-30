@@ -22,6 +22,7 @@ type User interface {
 	SignIn(userData model.SignInInput) (model.SignInOutput, error)
 	ChangePassword(userID string, password, newPassword string) error
 	GetUsersSortedByPoints() ([]model.UserInfoTable, error)
+	CompleteTask(userID, taskID string) error
 }
 
 type Task interface {

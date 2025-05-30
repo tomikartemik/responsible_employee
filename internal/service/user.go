@@ -10,7 +10,8 @@ import (
 )
 
 type UserService struct {
-	repo repository.User
+	repo     repository.User
+	repoTask repository.Task
 }
 
 func NewUserService(repo repository.User) *UserService {
@@ -84,4 +85,32 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 	}
 
 	return tableInfo, nil
+}
+
+func (s *UserService) CompleteTask(userID, taskID string) error {
+	user, err := s.repo.GetUserByID(userID)
+
+	if err != nil {
+		return err
+	}
+
+	task, err := s.repoTask.TaskByID(taskID)
+
+	if err != nil {
+		return err
+	}
+
+	err = s.repoTask.CompleteTask(taskID)
+
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdateUserPoints(userID, user.Points+task.Points)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

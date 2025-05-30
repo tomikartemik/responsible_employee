@@ -39,3 +39,15 @@ func (r *TaskRepository) TaskByID(taskID string) (model.Task, error) {
 
 	return task, nil
 }
+
+func (r *TaskRepository) CompleteTask(taskID string) error {
+	task, err := r.TaskByID(taskID)
+
+	if err != nil {
+		return err
+	}
+
+	task.Status = "Completed"
+
+	return r.db.Save(&task).Error
+}
