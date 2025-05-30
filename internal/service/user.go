@@ -15,8 +15,8 @@ type UserService struct {
 	repoTask repository.Task
 }
 
-func NewUserService(repo repository.User) *UserService {
-	return &UserService{repo: repo}
+func NewUserService(repo repository.User, repoTask repository.Task) *UserService {
+	return &UserService{repo: repo, repoTask: repoTask}
 }
 
 func (s *UserService) SignUp(userData model.User) error {
