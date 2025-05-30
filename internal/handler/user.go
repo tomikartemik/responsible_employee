@@ -64,7 +64,7 @@ func (h *Handler) GetUsersSortedByPoints(c *gin.Context) {
 }
 
 func (h *Handler) CompleteTask(c *gin.Context) {
-	taskID := c.Param("taskId")
+	taskID := c.Query("taskId")
 
 	if taskID == "" {
 		utils.NewErrorResponse(c, http.StatusBadRequest, "Task ID is required")
