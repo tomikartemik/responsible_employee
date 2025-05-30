@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/utils"
@@ -93,24 +94,28 @@ func (s *UserService) CompleteTask(userID, taskID string) error {
 	fmt.Println(userID, taskID)
 
 	if err != nil {
+		logrus.Error(err)
 		return err
 	}
 
 	task, err := s.repoTask.TaskByID(taskID)
 
 	if err != nil {
+		logrus.Error(err)
 		return err
 	}
 
 	err = s.repoTask.CompleteTask(taskID)
 
 	if err != nil {
+		logrus.Error(err)
 		return err
 	}
 
 	err = s.repo.UpdateUserPoints(userID, user.Points+task.Points)
 
 	if err != nil {
+		logrus.Error(err)
 		return err
 	}
 
