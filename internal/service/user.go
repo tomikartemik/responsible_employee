@@ -83,7 +83,7 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 	}
 
 	for _, user := range users {
-		tableInfo = append(tableInfo, model.UserInfoTable{ID: user.ID, Login: user.Login, Image: user.Image, Points: user.Points})
+		tableInfo = append(tableInfo, model.UserInfoTable{ID: user.ID, Login: user.Login, Image: user.Image, MonthlyPoints: user.MonthlyPoints, YearlyPoints: user.YearlyPoints})
 	}
 
 	return tableInfo, nil
