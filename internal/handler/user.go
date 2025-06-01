@@ -63,7 +63,7 @@ func (h *Handler) GetUsersSortedByPoints(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func (h *Handler) CompleteTask(c *gin.Context) {
+func (h *Handler) TakeTask(c *gin.Context) {
 	taskID := c.Query("taskId")
 
 	if taskID == "" {
@@ -83,7 +83,7 @@ func (h *Handler) CompleteTask(c *gin.Context) {
 		return
 	}
 
-	err := h.services.CompleteTask(userID, taskID)
+	err := h.services.TakeTask(userID, taskID)
 
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/utils"
@@ -88,36 +87,6 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 	return tableInfo, nil
 }
 
-func (s *UserService) CompleteTask(userID, taskID string) error {
-	user, err := s.repo.GetUserByID(userID)
-
-	fmt.Println(userID, taskID)
-
-	if err != nil {
-		logrus.Error(err)
-		return err
-	}
-
-	task, err := s.repoTask.TaskByID(taskID)
-
-	if err != nil {
-		logrus.Error(err)
-		return err
-	}
-
-	err = s.repoTask.CompleteTask(taskID)
-
-	if err != nil {
-		logrus.Error(err)
-		return err
-	}
-
-	err = s.repo.UpdateUserPoints(userID, user.Points+task.Points)
-
-	if err != nil {
-		logrus.Error(err)
-		return err
-	}
-
-	return nil
+func (s *UserService) TakeTask(userID, taskID string) error {
+	return s.repoTask.TakeTask(taskID, userID)
 }

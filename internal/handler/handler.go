@@ -40,7 +40,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	task := router.Group("/task", h.UserIdentity)
 	{
 		task.POST("", h.CreateTask)
-		task.POST("/complete", h.CompleteTask)
+		task.POST("/take", h.TakeTask)
 	}
 
 	global := router.Group("/global")

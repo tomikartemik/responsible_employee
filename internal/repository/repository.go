@@ -31,5 +31,5 @@ type Task interface {
 	CreateTask(task model.Task) error
 	GetAllTasks() ([]model.Task, error)
 	TaskByID(taskID string) (model.Task, error)
-	CompleteTask(taskID string) error
+	TakeTask(taskID, userID string) error
 }
