@@ -90,5 +90,5 @@ func (h *Handler) TakeTask(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "Task completed successfully")
+	c.JSON(http.StatusOK, "Task taken successfully")
 }
