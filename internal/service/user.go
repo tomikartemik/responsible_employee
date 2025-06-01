@@ -21,9 +21,11 @@ func NewUserService(repo repository.User, repoTask repository.Task) *UserService
 func (s *UserService) SignUp(userData model.User) error {
 	userData.Password = utils.GeneratePasswordHash(userData.Password)
 	userData.ID = uuid.Must(uuid.NewV4()).String()
-	userData.Points = 0
-	userData.MaxPoints = 0
-	userData.Rank = 0
+	userData.MonthlyPoints = 0
+	userData.YearlyPoints = 0
+	userData.MaxMonthlyPoints = 0
+	userData.MaxYearlyPoints = 0
+	userData.Rank = 1
 	return s.repo.SignUp(userData)
 }
 
