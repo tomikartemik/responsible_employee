@@ -94,12 +94,6 @@ func (h *Handler) TakeTask(c *gin.Context) {
 }
 
 func (h *Handler) CompleteTask(c *gin.Context) {
-	taskID := c.Query("taskId")
-
-	if taskID == "" {
-		utils.NewErrorResponse(c, http.StatusBadRequest, "Task ID is required")
-		return
-	}
 
 	userIDStr, exists := c.Get("user_id")
 	if !exists {
