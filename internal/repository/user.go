@@ -69,9 +69,9 @@ func (r *UserRepository) GetUsersSortedByPoints() ([]model.User, error) {
 func (r *UserRepository) UpdateUserPoints(userID string, monthlyPoints, yearlyPoints, maxMonthlyPoints, maxYearlyPoints int) error {
 	return r.db.Model(&model.User{}).
 		Where("id = ?", userID).
-		Update("monthlyPoints", monthlyPoints).
-		Update("yearlyPoints", yearlyPoints).
-		Update("maxMonthlyPoints", maxMonthlyPoints).
-		Update("maxYearlyPoints", maxYearlyPoints).
+		Update("monthly_points", monthlyPoints).
+		Update("yearly_points", yearlyPoints).
+		Update("max_monthly_points", maxMonthlyPoints).
+		Update("max_yearly_points", maxYearlyPoints).
 		Error
 }
