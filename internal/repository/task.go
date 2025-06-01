@@ -40,15 +40,6 @@ func (r *TaskRepository) TaskByID(taskID string) (model.Task, error) {
 	return task, nil
 }
 
-func (r *TaskRepository) TakeTask(taskID, userID string) error {
-	task, err := r.TaskByID(taskID)
-
-	if err != nil {
-		return err
-	}
-
-	task.Status = "Taken"
-	task.ResponsiblePersonID = userID
-
+func (r *TaskRepository) UpdateTask(task model.Task) error {
 	return r.db.Save(&task).Error
 }

@@ -8,12 +8,14 @@ import (
 type Service struct {
 	User
 	Task
+	Report
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		User: NewUserService(repos.User, repos.Task),
-		Task: NewTaskService(repos.Task),
+		User:   NewUserService(repos.User, repos.Task),
+		Task:   NewTaskService(repos.Task),
+		Report: NewReportService(repos.Report, repos.Task, repos.User),
 	}
 }
 
@@ -29,4 +31,8 @@ type Task interface {
 	CreateTask(task model.Task) error
 	GetAllTasks() ([]model.TasksShortInfo, error)
 	TaskByID(taskID string) (model.Task, error)
+}
+
+type Report interface {
+	RegisterReport(report model.Report) error
 }

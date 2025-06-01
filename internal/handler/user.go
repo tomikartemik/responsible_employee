@@ -92,3 +92,40 @@ func (h *Handler) TakeTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, "Task taken successfully")
 }
+
+func (h *Handler) CompleteTask(c *gin.Context) {
+	taskID := c.Query("taskId")
+
+	if taskID == "" {
+		utils.NewErrorResponse(c, http.StatusBadRequest, "Task ID is required")
+		return
+	}
+
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")
+		return
+	}
+
+	userID, ok := userIDStr.(string)
+	if !ok {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "invalid user_id type in context")
+		return
+	}
+
+	var report model.Report
+
+	if err := c.ShouldBindJSON(&report); err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	report.UserID = userID
+
+	if err := h.services.RegisterReport(report); err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, "Task completed successfully")
+}

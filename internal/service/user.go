@@ -90,5 +90,13 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 }
 
 func (s *UserService) TakeTask(userID, taskID string) error {
-	return s.repoTask.TakeTask(taskID, userID)
+	task, err := s.repoTask.TaskByID(taskID)
+
+	if err != nil {
+		return err
+	}
+
+	task.ResponsiblePersonID = userID
+
+	return s.repoTask.UpdateTask(task)
 }

@@ -8,12 +8,14 @@ import (
 type Repository struct {
 	User
 	Task
+	Report
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		User: NewUserRepository(db),
-		Task: NewTaskRepository(db),
+		User:   NewUserRepository(db),
+		Task:   NewTaskRepository(db),
+		Report: NewReportRepository(db),
 	}
 }
 
@@ -24,12 +26,16 @@ type User interface {
 	GetUserByUsername(username string) (model.User, error)
 	ChangePassword(userID string, password string) error
 	GetUsersSortedByPoints() ([]model.User, error)
-	UpdateUserPoints(userID string, points int) error
+	UpdateUserPoints(userID string, monthlyPoints, yearlyPoints, maxMonthlyPoints, maxYearlyPoints int) error
 }
 
 type Task interface {
 	CreateTask(task model.Task) error
 	GetAllTasks() ([]model.Task, error)
 	TaskByID(taskID string) (model.Task, error)
-	TakeTask(taskID, userID string) error
+	UpdateTask(task model.Task) error
+}
+
+type Report interface {
+	CreateReport(report model.Report) error
 }
