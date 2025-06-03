@@ -8,15 +8,50 @@ import (
 )
 
 type TaskService struct {
-	repo repository.Task
+	repo          repository.Task
+	repoViolation repository.Violation
+	repoUser      repository.User
 }
 
-func NewTaskService(repo repository.Task) *TaskService {
-	return &TaskService{repo: repo}
+func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User) *TaskService {
+	return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser}
 }
 
-func (s *TaskService) CreateTask(task model.Task) error {
+func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
 	task.ID = uuid.Must(uuid.NewV4()).String()
+	task.ReportedUserId = reportedUserID
+
+	violation, err := s.repoViolation.GetViolationByID(task.ViolationID)
+	if err != nil {
+		return err
+	}
+
+	points := 20
+
+	if violation.RiskLevel == "Средний" {
+		points = 25
+	}
+
+	if violation.RiskLevel == "Высокий" {
+		points = 30
+	}
+
+	user, err := s.repoUser.GetUserByID(task.ReportedUserId)
+
+	if err != nil {
+		return err
+	}
+
+	err = s.repoUser.UpdateUserPoints(task.ReportedUserId,
+		user.MonthlyPoints+points,
+		user.YearlyPoints+points,
+		max(user.MaxMonthlyPoints, user.MonthlyPoints+points),
+		max(user.MaxYearlyPoints, user.YearlyPoints+points))
+
+	if err != nil {
+		return err
+	}
+
 	return s.repo.CreateTask(task)
 }
 

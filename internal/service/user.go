@@ -10,12 +10,13 @@ import (
 )
 
 type UserService struct {
-	repo     repository.User
-	repoTask repository.Task
+	repo          repository.User
+	repoTask      repository.Task
+	repoViolation repository.Violation
 }
 
-func NewUserService(repo repository.User, repoTask repository.Task) *UserService {
-	return &UserService{repo: repo, repoTask: repoTask}
+func NewUserService(repo repository.User, repoTask repository.Task, repoViolation repository.Violation) *UserService {
+	return &UserService{repo: repo, repoTask: repoTask, repoViolation: repoViolation}
 }
 
 func (s *UserService) SignUp(userData model.User) error {

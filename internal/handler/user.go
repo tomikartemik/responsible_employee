@@ -63,6 +63,34 @@ func (h *Handler) GetUsersSortedByPoints(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+func (h *Handler) CreateTask(c *gin.Context) {
+	var task model.Task
+
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")
+		return
+	}
+
+	userID, ok := userIDStr.(string)
+	if !ok {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "invalid user_id type in context")
+		return
+	}
+
+	if err := c.ShouldBindJSON(&task); err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.CreateTask(task, userID); err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, model.SuccessResponse{Message: "Проблема успешно сохранена!"})
+}
+
 func (h *Handler) TakeTask(c *gin.Context) {
 	taskID := c.Query("taskId")
 

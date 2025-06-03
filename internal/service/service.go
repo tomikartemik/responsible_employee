@@ -14,8 +14,8 @@ type Service struct {
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		User:      NewUserService(repos.User, repos.Task),
-		Task:      NewTaskService(repos.Task),
+		User:      NewUserService(repos.User, repos.Task, repos.Violation),
+		Task:      NewTaskService(repos.Task, repos.Violation, repos.User),
 		Report:    NewReportService(repos.Report, repos.Task, repos.User),
 		Violation: NewViolationService(repos.Violation),
 	}
@@ -30,7 +30,7 @@ type User interface {
 }
 
 type Task interface {
-	CreateTask(task model.Task) error
+	CreateTask(task model.Task, reportedUserID string) error
 	GetAllTasks() ([]model.TasksShortInfo, error)
 	TaskByID(taskID string) (model.Task, error)
 }

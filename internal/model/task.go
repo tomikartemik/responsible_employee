@@ -12,6 +12,7 @@ type Task struct {
 	DateReported        time.Time `gorm:"not null" json:"dateReported"`
 	Points              int       `json:"points"`
 	Status              string    `gorm:"not null" json:"status"`
+	ReportedUserId      string    `json:"reportedUserId"`
 	ResponsiblePersonID string    `json:"responsiblePerson"`
 	ReportID            string    `json:"reportId"`
 	TimeLeft            string    `gorm:"not null" json:"timeLeft"`
