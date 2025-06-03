@@ -21,7 +21,7 @@ func (r *TaskRepository) CreateTask(task model.Task) error {
 func (r *TaskRepository) GetAllTasks() ([]model.Task, error) {
 	var tasks []model.Task
 
-	err := r.db.Find(&tasks).Where("status = Active").Preload("violation").Error
+	err := r.db.Find(&tasks).Where("status = Active").Preload("Violations").Error
 	if err != nil {
 		return []model.Task{}, err
 	}
@@ -32,7 +32,7 @@ func (r *TaskRepository) GetAllTasks() ([]model.Task, error) {
 func (r *TaskRepository) TaskByID(taskID string) (model.Task, error) {
 	var task model.Task
 
-	err := r.db.Where("id = ?", taskID).Preload("violation").First(&task).Error
+	err := r.db.Where("id = ?", taskID).Preload("Violations").First(&task).Error
 	if err != nil {
 		return model.Task{}, err
 	}
