@@ -26,6 +26,7 @@ func ConnectDB() (*gorm.DB, error) {
 		model.Task{},
 		model.Notification{},
 		model.Report{},
+		model.Violation{},
 	)
 
 	if err != nil {
