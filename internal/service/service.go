@@ -9,13 +9,15 @@ type Service struct {
 	User
 	Task
 	Report
+	Violation
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		User:   NewUserService(repos.User, repos.Task),
-		Task:   NewTaskService(repos.Task),
-		Report: NewReportService(repos.Report, repos.Task, repos.User),
+		User:      NewUserService(repos.User, repos.Task),
+		Task:      NewTaskService(repos.Task),
+		Report:    NewReportService(repos.Report, repos.Task, repos.User),
+		Violation: NewViolationService(repos.Violation),
 	}
 }
 
@@ -35,4 +37,10 @@ type Task interface {
 
 type Report interface {
 	RegisterReport(report model.Report) error
+}
+
+type Violation interface {
+	GetAllViolations() ([]model.Violation, error)
+	GetViolationByCategory(category string) ([]model.Violation, error)
+	GetViolationByID(id int) (model.Violation, error)
 }

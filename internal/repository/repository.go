@@ -9,13 +9,15 @@ type Repository struct {
 	User
 	Task
 	Report
+	Violation
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		User:   NewUserRepository(db),
-		Task:   NewTaskRepository(db),
-		Report: NewReportRepository(db),
+		User:      NewUserRepository(db),
+		Task:      NewTaskRepository(db),
+		Report:    NewReportRepository(db),
+		Violation: NewViolationRepository(db),
 	}
 }
 
@@ -38,4 +40,10 @@ type Task interface {
 
 type Report interface {
 	CreateReport(report model.Report) error
+}
+
+type Violation interface {
+	GetAllViolations() ([]model.Violation, error)
+	GetViolationByCategory(category string) ([]model.Violation, error)
+	GetViolationByID(id int) (model.Violation, error)
 }

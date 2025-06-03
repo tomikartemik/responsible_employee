@@ -49,5 +49,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		global.GET("/tasks", h.GetAllTasks)
 		global.GET("/task", h.GetTaskById)
 	}
+
+	violation := router.Group("/violation")
+	{
+		violation.GET("/all", h.GetAllViolations)
+		violation.GET("", h.GetViolationByCategory)
+		violation.GET("/by-id", h.GetViolationByID)
+	}
 	return router
 }
