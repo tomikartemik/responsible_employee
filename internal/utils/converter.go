@@ -23,9 +23,10 @@ func UserToUserOutput(user model.User) model.UserOutput {
 
 func TaskToTaskShortInfo(task model.Task) model.TasksShortInfo {
 	return model.TasksShortInfo{
-		ID:        task.ID,
-		Violation: task.Violation,
-		Points:    task.Points,
-		TimeLeft:  task.TimeLeft,
+		ID:          task.ID,
+		ViolationID: task.ViolationID,
+		Violation:   task.Violation,
+		Points:      task.Points,
+		TimeLeft:    task.TimeLeft,
 	}
 }

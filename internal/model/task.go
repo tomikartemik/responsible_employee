@@ -4,7 +4,8 @@ import "time"
 
 type Task struct {
 	ID                  string    `gorm:"primaryKey;unique" json:"id"`
-	Violation           string    `gorm:"not null" json:"violation"`
+	ViolationID         int       `gorm:"not null" json:"violation_id"`
+	Violation           Violation `gorm:"foreignKey:ViolationID" json:"violation"`
 	Description         string    `gorm:"not null" json:"description"`
 	Suggestion          string    `gorm:"not null" json:"suggestion"`
 	ImageUrl            string    `json:"imageUrl"`
@@ -17,8 +18,9 @@ type Task struct {
 }
 
 type TasksShortInfo struct {
-	ID        string `gorm:"primaryKey;unique" json:"id"`
-	Violation string `gorm:"not null" json:"violation"`
-	Points    int    `gorm:"not null" json:"points"`
-	TimeLeft  string `gorm:"not null" json:"timeLeft"`
+	ID          string    `gorm:"primaryKey;unique" json:"id"`
+	ViolationID int       `gorm:"not null" json:"violation_id"`
+	Violation   Violation `gorm:"foreignKey:ViolationID" json:"violation"`
+	Points      int       `gorm:"not null" json:"points"`
+	TimeLeft    string    `gorm:"not null" json:"timeLeft"`
 }
