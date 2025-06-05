@@ -20,7 +20,7 @@ type Task struct {
 
 type TasksShortInfo struct {
 	ID          string    `gorm:"primaryKey;unique" json:"id"`
-	ViolationID int       `gorm:"not null" json:"violation_id"`
+	ViolationID int       `gorm:"not null" json:"violation_Id"`
 	Violation   Violation `gorm:"foreignKey:ViolationID" json:"violation"`
 	Points      int       `json:"points"`
 	TimeLeft    string    `gorm:"not null" json:"timeLeft"`
