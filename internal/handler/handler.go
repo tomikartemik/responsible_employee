@@ -40,7 +40,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	authorized := router.Group("/authorized", h.UserIdentity)
 	{
 		authorized.GET("/user", h.UserByID)
-		authorized.POST("create-task", h.CreateTask)
+		authorized.POST("/create-task", h.CreateTask)
 		authorized.POST("/take-task", h.TakeTask)
 		authorized.POST("/complete-task", h.CompleteTask)
 	}
