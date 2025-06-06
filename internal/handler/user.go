@@ -53,6 +53,28 @@ func (h *Handler) SignIn(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+func (h *Handler) UserByID(c *gin.Context) {
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")
+		return
+	}
+
+	userID, ok := userIDStr.(string)
+	if !ok {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "invalid user_id type in context")
+		return
+	}
+
+	user, err := h.services.GetUserByID(userID)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
 func (h *Handler) GetUsersSortedByPoints(c *gin.Context) {
 	users, err := h.services.GetUsersSortedByPoints()
 

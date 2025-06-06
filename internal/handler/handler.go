@@ -37,6 +37,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		user.GET("/leaders", h.GetUsersSortedByPoints)
 	}
 
+	authorized := router.Group("/authorized", h.UserIdentity)
+	{
+		authorized.GET("/user", h.UserByID)
+	}
+
 	task := router.Group("/task", h.UserIdentity)
 	{
 		task.POST("", h.CreateTask)

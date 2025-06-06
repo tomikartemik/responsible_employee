@@ -75,6 +75,17 @@ func (s *UserService) ChangePassword(userID string, password, newPassword string
 	return nil
 }
 
+func (s *UserService) GetUserByID(userID string) (model.UserOutput, error) {
+	user, err := s.repo.GetUserByID(userID)
+	if err != nil {
+		return model.UserOutput{}, err
+	}
+
+	userOutput := utils.UserToUserOutput(user)
+
+	return userOutput, nil
+}
+
 func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 	tableInfo := []model.UserInfoTable{}
 	users, err := s.repo.GetUsersSortedByPoints()

@@ -24,6 +24,7 @@ func NewService(repos *repository.Repository) *Service {
 type User interface {
 	SignUp(userData model.User) error
 	SignIn(userData model.SignInInput) (model.SignInOutput, error)
+	GetUserByID(userID string) (model.UserOutput, error)
 	ChangePassword(userID string, password, newPassword string) error
 	GetUsersSortedByPoints() ([]model.UserInfoTable, error)
 	TakeTask(userID, taskID string) error

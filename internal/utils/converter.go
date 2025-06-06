@@ -13,6 +13,7 @@ func UserToUserOutput(user model.User) model.UserOutput {
 		Position:         user.Position,
 		Email:            user.Email,
 		Phone:            user.Phone,
+		Tasks:            user.Tasks,
 		MonthlyPoints:    user.MonthlyPoints,
 		YearlyPoints:     user.YearlyPoints,
 		MaxMonthlyPoints: user.MaxMonthlyPoints,
