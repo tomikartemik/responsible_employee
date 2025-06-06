@@ -37,7 +37,7 @@ func (r *UserRepository) SignIn(userData model.SignInInput) (string, error) {
 
 func (r *UserRepository) GetUserByID(userID string) (model.User, error) {
 	var user model.User
-	if err := r.db.Where("id = ?", userID).Preload("Tasks").First(&user).Error; err != nil {
+	if err := r.db.Where("id = ?", userID).Preload("Tasks").Preload("Tasks.Violation").First(&user).Error; err != nil {
 		return model.User{}, errors.New("Пользователь с таким ID не найден!")
 	}
 
