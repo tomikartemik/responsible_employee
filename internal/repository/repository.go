@@ -40,6 +40,8 @@ type Task interface {
 
 type Report interface {
 	CreateReport(report model.Report) error
+	ReportByID(reportID string) (model.Report, error)
+	UpdateReport(report model.Report) error
 }
 
 type Violation interface {

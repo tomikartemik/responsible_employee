@@ -1,6 +1,7 @@
 package service
 
 import (
+	"mime/multipart"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 )
@@ -10,6 +11,7 @@ type Service struct {
 	Task
 	Report
 	Violation
+	Photo
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -18,6 +20,7 @@ func NewService(repos *repository.Repository) *Service {
 		Task:      NewTaskService(repos.Task, repos.Violation, repos.User),
 		Report:    NewReportService(repos.Report, repos.Task, repos.User),
 		Violation: NewViolationService(repos.Violation),
+		Photo:     NewPhotoService(repos.Task, repos.Report),
 	}
 }
 
@@ -44,4 +47,9 @@ type Violation interface {
 	GetAllViolations() ([]model.Violation, error)
 	GetViolationByCategory(category string) ([]model.Violation, error)
 	GetViolationByID(id int) (model.Violation, error)
+}
+
+type Photo interface {
+	SaveTaskPhoto(taskID string, photo *multipart.FileHeader) error
+	SaveReportPhoto(reportID string, photo *multipart.FileHeader) error
 }
