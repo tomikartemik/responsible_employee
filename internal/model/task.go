@@ -13,8 +13,7 @@ type Task struct {
 	Points              int       `json:"points"`
 	Status              string    `gorm:"not null" json:"status"`
 	ReportedUserId      string    `json:"reportedUserId"`
-	ResponsiblePersonID *string   `json:"responsiblePerson" gorm:"default:null"`
-	ResponsiblePerson   User      `gorm:"foreignKey:ResponsiblePersonID;references:ID"`
+	ResponsiblePersonID string    `json:"responsiblePerson" gorm:"default:null"`
 	ReportID            string    `json:"reportId"`
 	TimeLeft            string    `gorm:"not null" json:"timeLeft"`
 }
