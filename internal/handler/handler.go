@@ -48,6 +48,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			task.POST("/complete", h.CompleteTask)
 		}
 
+		message := authorized.Group("/message")
+		{
+			message.GET("", h.GetMessageByUserID)
+			message.GET("/read", h.ReadMessageByID)
+		}
+
 		authorized.POST("/task-photo", h.UploadTaskPhoto)
 		authorized.POST("/report-photo", h.UploadReportPhoto)
 	}
