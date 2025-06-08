@@ -11,10 +11,11 @@ type TaskService struct {
 	repo          repository.Task
 	repoViolation repository.Violation
 	repoUser      repository.User
+	repoMessage   repository.Message
 }
 
-func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User) *TaskService {
-	return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser}
+func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message) *TaskService {
+	return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage}
 }
 
 func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
@@ -47,6 +48,15 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
 		user.YearlyPoints+points,
 		max(user.MaxMonthlyPoints, user.MonthlyPoints+points),
 		max(user.MaxYearlyPoints, user.YearlyPoints+points))
+
+	if err != nil {
+		return err
+	}
+
+	err = s.repoMessage.CreateMessage(model.Message{
+		UserID: task.ReportedUserId,
+		Text:   "Вы успешно зарегестрировали нарушение!",
+	})
 
 	if err != nil {
 		return err
