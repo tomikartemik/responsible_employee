@@ -26,14 +26,7 @@ func (s *PhotoService) SaveTaskPhoto(taskID string, photo *multipart.FileHeader)
 		return err
 	}
 
-	task, err := s.repoTask.TaskByID(taskID)
-	if err != nil {
-		return err
-	}
-
-	task.ImageUrl = path
-
-	err = s.repoTask.UpdateTask(task)
+	err = s.repoTask.AddPhotoToTask(taskID, path)
 	if err != nil {
 		return err
 	}

@@ -44,6 +44,10 @@ func (r *TaskRepository) TaskByID(taskID string) (model.Task, error) {
 	return task, nil
 }
 
+func (r *TaskRepository) AddPhotoToTask(taskID, photoUrl string) error {
+	return r.db.Where("id = ?", taskID).Update("image_url", photoUrl).Error
+}
+
 func (r *TaskRepository) UpdateTask(task model.Task) error {
 	return r.db.Save(&task).Error
 }
