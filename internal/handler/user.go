@@ -105,12 +105,13 @@ func (h *Handler) CreateTask(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.CreateTask(task, userID); err != nil {
+	taskID, err := h.services.CreateTask(task, userID)
+	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, model.SuccessResponse{Message: "Проблема успешно сохранена!"})
+	c.JSON(http.StatusOK, taskID)
 }
 
 func (h *Handler) TakeTask(c *gin.Context) {

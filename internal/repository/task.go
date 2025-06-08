@@ -13,9 +13,13 @@ func NewTaskRepository(db *gorm.DB) *TaskRepository {
 	return &TaskRepository{db: db}
 }
 
-func (r *TaskRepository) CreateTask(task model.Task) error {
+func (r *TaskRepository) CreateTask(task model.Task) (string, error) {
 	task.Status = "Active"
-	return r.db.Create(&task).Error
+	err := r.db.Create(&task).Error
+	if err != nil {
+		return "", err
+	}
+	return task.ID, nil
 }
 
 func (r *TaskRepository) GetAllTasks() ([]model.Task, error) {

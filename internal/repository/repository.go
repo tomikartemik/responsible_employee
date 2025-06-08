@@ -34,7 +34,7 @@ type User interface {
 }
 
 type Task interface {
-	CreateTask(task model.Task) error
+	CreateTask(task model.Task) (string, error)
 	GetAllTasks() ([]model.Task, error)
 	TaskByID(taskID string) (model.Task, error)
 	UpdateTask(task model.Task) error

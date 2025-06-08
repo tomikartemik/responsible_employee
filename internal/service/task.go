@@ -18,13 +18,13 @@ func NewTaskService(repo repository.Task, repoViolation repository.Violation, re
 	return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage}
 }
 
-func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
+func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string, error) {
 	task.ID = uuid.Must(uuid.NewV4()).String()
 	task.ReportedUserId = reportedUserID
 
 	violation, err := s.repoViolation.GetViolationByID(task.ViolationID)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	points := 20
@@ -40,7 +40,7 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
 	user, err := s.repoUser.GetUserByID(task.ReportedUserId)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = s.repoUser.UpdateUserPoints(task.ReportedUserId,
@@ -50,7 +50,7 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
 		max(user.MaxYearlyPoints, user.YearlyPoints+points))
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = s.repoMessage.CreateMessage(model.Message{
@@ -59,10 +59,14 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) error {
 	})
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return s.repo.CreateTask(task)
+	taskID, err := s.repo.CreateTask(task)
+	if err != nil {
+		return "", err
+	}
+	return taskID, nil
 }
 
 func (s *TaskService) GetAllTasks() ([]model.TasksShortInfo, error) {
