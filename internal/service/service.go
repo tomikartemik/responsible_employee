@@ -12,6 +12,7 @@ type Service struct {
 	Report
 	Violation
 	Photo
+	Message
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -21,6 +22,7 @@ func NewService(repos *repository.Repository) *Service {
 		Report:    NewReportService(repos.Report, repos.Task, repos.User),
 		Violation: NewViolationService(repos.Violation),
 		Photo:     NewPhotoService(repos.Task, repos.Report),
+		Message:   NewMessageService(repos.Message),
 	}
 }
 
@@ -52,4 +54,9 @@ type Violation interface {
 type Photo interface {
 	SaveTaskPhoto(taskID string, photo *multipart.FileHeader) error
 	SaveReportPhoto(reportID string, photo *multipart.FileHeader) error
+}
+
+type Message interface {
+	MessagesByUserID(userID string) ([]model.Message, error)
+	ReadMessage(messageID int) error
 }

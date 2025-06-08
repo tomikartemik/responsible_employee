@@ -10,6 +10,7 @@ type Repository struct {
 	Task
 	Report
 	Violation
+	Message
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -18,6 +19,7 @@ func NewRepository(db *gorm.DB) *Repository {
 		Task:      NewTaskRepository(db),
 		Report:    NewReportRepository(db),
 		Violation: NewViolationRepository(db),
+		Message:   NewMessageRepository(db),
 	}
 }
 
@@ -48,4 +50,10 @@ type Violation interface {
 	GetAllViolations() ([]model.Violation, error)
 	GetViolationByCategory(category string) ([]model.Violation, error)
 	GetViolationByID(id int) (model.Violation, error)
+}
+
+type Message interface {
+	CreateMessage(message model.Message) error
+	MessagesByUserID(userID string) ([]model.Message, error)
+	ReadMessage(messageID int) error
 }
