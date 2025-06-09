@@ -103,6 +103,7 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 
 func (s *UserService) TakeTask(userID, taskID string) error {
 	task, err := s.repoTask.TaskByID(taskID)
+	fmt.Println(userID)
 
 	if err != nil {
 		return err
