@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
@@ -55,7 +56,7 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 
 	err = s.repoMessage.CreateMessage(model.Message{
 		UserID: task.ReportedUserId,
-		Text:   "Вы успешно зарегестрировали нарушение!",
+		Text:   fmt.Sprintf("Вы успешно зарегестрировали нарушение и заработали %d баллов!", task.Points),
 	})
 
 	if err != nil {
