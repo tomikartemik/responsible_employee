@@ -110,6 +110,7 @@ func (s *UserService) TakeTask(userID, taskID string) error {
 	}
 
 	task.ResponsiblePersonID = userID
+	task.Status = "Taken"
 
 	return s.repoTask.UpdateTask(task)
 }
