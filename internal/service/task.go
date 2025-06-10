@@ -44,11 +44,8 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 		return "", err
 	}
 
-	err = s.repoUser.UpdateUserPoints(task.ReportedUserId,
-		user.MonthlyPoints+points,
-		user.YearlyPoints+points,
-		max(user.MaxMonthlyPoints, user.MonthlyPoints+points),
-		max(user.MaxYearlyPoints, user.YearlyPoints+points))
+	user = utils.AddPoints(user, points)
+	err = s.repoUser.UpdateUserPoints(user)
 
 	if err != nil {
 		return "", err

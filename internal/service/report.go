@@ -5,6 +5,7 @@ import (
 	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
+	"responsible_employee/internal/utils"
 	"time"
 )
 
@@ -57,11 +58,14 @@ func (s *ReportService) RegisterReport(report model.Report) error {
 		return err
 	}
 
-	return s.repoUser.UpdateUserPoints(user.ID,
-		user.MonthlyPoints+task.Points,
-		user.YearlyPoints+task.Points,
-		max(user.MaxMonthlyPoints, user.MonthlyPoints+task.Points),
-		max(user.MaxYearlyPoints, user.YearlyPoints+task.Points))
+	user = utils.AddPoints(user, task.Points)
+	err = s.repoUser.UpdateUserPoints(user)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *ReportService) hoursSincePublication(publishedTime time.Time) int {

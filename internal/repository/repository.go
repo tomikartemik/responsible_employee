@@ -30,7 +30,7 @@ type User interface {
 	GetUserByUsername(username string) (model.User, error)
 	ChangePassword(userID string, password string) error
 	GetUsersSortedByPoints() ([]model.User, error)
-	UpdateUserPoints(userID string, monthlyPoints, yearlyPoints, maxMonthlyPoints, maxYearlyPoints int) error
+	UpdateUserPoints(user model.User) error
 }
 
 type Task interface {
