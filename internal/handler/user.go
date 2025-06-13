@@ -174,3 +174,13 @@ func (h *Handler) CompleteTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, "Task completed successfully")
 }
+
+func (h *Handler) ChangePasswordByMail(c *gin.Context) {
+	username := c.Query("username")
+	err := h.services.ChangePasswordByMail(username)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, "OK!")
+}

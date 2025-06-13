@@ -6,6 +6,7 @@ import (
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/utils"
+	"time"
 )
 
 type TaskService struct {
@@ -21,6 +22,7 @@ func NewTaskService(repo repository.Task, repoViolation repository.Violation, re
 
 func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string, error) {
 	task.ID = uuid.Must(uuid.NewV4()).String()
+	task.DateReported = time.Now()
 	task.ReportedUserId = reportedUserID
 
 	violation, err := s.repoViolation.GetViolationByID(task.ViolationID)

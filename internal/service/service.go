@@ -33,6 +33,7 @@ type User interface {
 	ChangePassword(userID string, password, newPassword string) error
 	GetUsersSortedByPoints() ([]model.UserInfoTable, error)
 	TakeTask(userID, taskID string) error
+	ChangePasswordByMail(mail string) error
 }
 
 type Task interface {

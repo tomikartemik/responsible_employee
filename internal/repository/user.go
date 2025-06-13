@@ -46,7 +46,7 @@ func (r *UserRepository) GetUserByID(userID string) (model.User, error) {
 
 func (r *UserRepository) GetUserByUsername(username string) (model.User, error) {
 	var user model.User
-	if err := r.db.Where("username = ?", username).First(&user).Error; err != nil {
+	if err := r.db.Where("login = ?", username).First(&user).Error; err != nil {
 		return model.User{}, err
 	}
 

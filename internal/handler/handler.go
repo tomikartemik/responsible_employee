@@ -35,6 +35,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		user.POST("/sign-up", h.SignUp)
 		user.POST("/sign-in", h.SignIn)
 		user.GET("/leaders", h.GetUsersSortedByPoints)
+		user.GET("/change-password", h.ChangePasswordByMail)
 	}
 
 	authorized := router.Group("/authorized", h.UserIdentity)
