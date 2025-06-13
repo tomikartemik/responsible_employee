@@ -36,7 +36,7 @@ func (s *ReportService) RegisterReport(report model.Report) error {
 
 	task.ReportID = report.ID
 	task.Status = "Completed"
-	task.Points = 100 - ((48 - s.hoursSincePublication(task.DateReported)) * 2)
+	task.Points = 100 - (s.hoursSincePublication(task.DateReported) * 2)
 
 	err = s.repoTask.UpdateTask(task)
 	if err != nil {
