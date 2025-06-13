@@ -107,7 +107,13 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 
 func (s *UserService) TakeTask(userID, taskID string) error {
 	task, err := s.repoTask.TaskByID(taskID)
-	fmt.Println(userID)
+	if task.ReportedUserId == userID {
+		return errors.New("Нельзя выполнять собственные задания!")
+	}
+
+	if task.Status != "Active" {
+		return errors.New("Это задание уже взяли в работу")
+	}
 
 	if err != nil {
 		return err

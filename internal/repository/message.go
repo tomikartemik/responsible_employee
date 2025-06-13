@@ -20,7 +20,7 @@ func (r *MessageRepository) CreateMessage(message model.Message) error {
 func (r *MessageRepository) MessagesByUserID(userID string) ([]model.Message, error) {
 	var messages []model.Message
 
-	if err := r.db.Where("user_id = ?", userID).Find(&messages).Error; err != nil {
+	if err := r.db.Where("user_id = ?", userID).Order("id DESC").Find(&messages).Error; err != nil {
 		return nil, err
 	}
 
