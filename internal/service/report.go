@@ -50,7 +50,7 @@ func (s *ReportService) RegisterReport(report model.Report) error {
 	}
 
 	err = s.repoMessage.CreateMessage(model.Message{
-		UserID: task.ReportedUserId,
+		UserID: task.ResponsiblePersonID,
 		Text:   fmt.Sprintf("Вы успешно устранили нарушение и заработали %d баллов!", task.Points),
 	})
 
