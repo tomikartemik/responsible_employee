@@ -55,7 +55,7 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 
 	err = s.repoMessage.CreateMessage(model.Message{
 		UserID: task.ReportedUserId,
-		Text:   fmt.Sprintf("Вы успешно зарегестрировали нарушение и заработали %d баллов!", task.Points),
+		Text:   fmt.Sprintf("Вы успешно зарегистрировали нарушение и заработали %d баллов!", points),
 	})
 
 	if err != nil {
