@@ -42,6 +42,7 @@ func (s *ReportService) RegisterReport(report model.Report) error {
 	}
 
 	report.ID = uuid.Must(uuid.NewV4()).String()
+	report.ReportedAt = time.Now()
 
 	err = s.repo.CreateReport(report)
 
