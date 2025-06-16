@@ -15,7 +15,6 @@ type Task struct {
 	ReportedUserId      string    `json:"reportedUserId"`
 	ResponsiblePersonID string    `json:"responsiblePerson" gorm:"default:null"`
 	ReportID            string    `json:"reportId"`
-	Report              *Report   `gorm:"foreignKey:ReportID" json:"report"`
 	TimeLeft            string    `gorm:"not null" json:"timeLeft"`
 }
 

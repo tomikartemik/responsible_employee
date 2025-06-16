@@ -42,7 +42,6 @@ func (r *UserRepository) GetUserByID(userID string) (model.User, error) {
 		Preload("Tasks", "status = ?", "Taken").
 		Preload("Tasks.Violation").
 		Preload("MyTasks").
-		Preload("MyTasks.Report").
 		First(&user).
 		Error
 
