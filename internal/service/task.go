@@ -23,6 +23,7 @@ func NewTaskService(repo repository.Task, repoViolation repository.Violation, re
 func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string, error) {
 	task.ID = uuid.Must(uuid.NewV4()).String()
 	task.DateReported = time.Now()
+	task.EndDate = task.DateReported.Add(48 * time.Hour)
 	task.ReportedUserId = reportedUserID
 
 	violation, err := s.repoViolation.GetViolationByID(task.ViolationID)

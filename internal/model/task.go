@@ -10,6 +10,7 @@ type Task struct {
 	Suggestion          string    `gorm:"not null" json:"suggestion"`
 	ImageUrl            string    `json:"imageUrl"`
 	DateReported        time.Time `gorm:"not null" json:"dateReported"`
+	EndDate             time.Time `gorm:"not null" json:"endDate"`
 	Points              int       `json:"points"`
 	Status              string    `gorm:"not null" json:"status"`
 	ReportedUserId      string    `json:"reportedUserId"`

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"responsible_employee/internal/model"
+	"time"
 )
 
 type UserRepository struct {
@@ -37,9 +38,11 @@ func (r *UserRepository) SignIn(userData model.SignInInput) (string, error) {
 
 func (r *UserRepository) GetUserByID(userID string) (model.User, error) {
 	var user model.User
+	currentTime := time.Now()
+
 	err := r.db.
 		Where("id = ?", userID).
-		Preload("Tasks", "status = ?", "Taken").
+		Preload("Tasks", "status = ? AND end_date > ?", "Taken", currentTime).
 		Preload("Tasks.Violation").
 		Preload("MyTasks").
 		First(&user).

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
@@ -31,14 +32,18 @@ func (s *ReportService) ReportByID(reportID string) (model.Report, error) {
 }
 
 func (s *ReportService) RegisterReport(report model.Report) error {
-	report.ID = uuid.Must(uuid.NewV4()).String()
-
-	err := s.repo.CreateReport(report)
+	task, err := s.repoTask.TaskByID(report.TaskID)
 	if err != nil {
 		return err
 	}
 
-	task, err := s.repoTask.TaskByID(report.TaskID)
+	if time.Now().After(task.EndDate.Add(48 * time.Hour)) {
+		return errors.New("Срок выполнения задания истек!")
+	}
+
+	report.ID = uuid.Must(uuid.NewV4()).String()
+
+	err = s.repo.CreateReport(report)
 
 	if err != nil {
 		return err

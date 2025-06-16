@@ -11,6 +11,7 @@ import (
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/utils"
+	"time"
 )
 
 type UserService struct {
@@ -112,7 +113,11 @@ func (s *UserService) TakeTask(userID, taskID string) error {
 	}
 
 	if task.Status != "Active" {
-		return errors.New("Это задание уже взяли в работу")
+		return errors.New("Это задание уже взяли в работу!")
+	}
+
+	if time.Now().After(task.EndDate) {
+		return errors.New("Это задание уже нельзя взять в работу!")
 	}
 
 	if err != nil {
