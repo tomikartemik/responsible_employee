@@ -16,7 +16,6 @@ type Task struct {
 	ReportedUserId      string    `json:"reportedUserId"`
 	ResponsiblePersonID string    `json:"responsiblePerson" gorm:"default:null"`
 	ReportID            string    `json:"reportId"`
-	TimeLeft            string    `gorm:"not null" json:"timeLeft"`
 }
 
 type TasksShortInfo struct {
