@@ -9,6 +9,7 @@ import (
 	"responsible_employee/internal/handler"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/service"
+	"responsible_employee/internal/utils"
 )
 
 func main() {
@@ -27,8 +28,13 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
+	taskChecker := utils.NewTaskChecker(db)
+	taskChecker.Start()
+	defer taskChecker.Stop()
+
 	srv := new(internal.Server)
 	if err := srv.Run(os.Getenv("PORT"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running server %s", err.Error())
 	}
+
 }
