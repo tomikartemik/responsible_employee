@@ -55,6 +55,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			message.GET("/read", h.ReadMessageByID)
 		}
 
+		authorized.GET("/report-by-id", h.GetReportById)
 		authorized.POST("/task-photo", h.UploadTaskPhoto)
 		authorized.POST("/report-photo", h.UploadReportPhoto)
 	}

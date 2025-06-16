@@ -44,6 +44,7 @@ type Task interface {
 
 type Report interface {
 	RegisterReport(report model.Report) error
+	ReportByID(reportID string) (model.Report, error)
 }
 
 type Violation interface {

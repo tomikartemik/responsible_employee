@@ -20,6 +20,16 @@ func NewReportService(repo repository.Report, repoTask repository.Task, repoUser
 	return &ReportService{repo: repo, repoTask: repoTask, repoUser: repoUser, repoMessage: repoMessage}
 }
 
+func (s *ReportService) ReportByID(reportID string) (model.Report, error) {
+	report, err := s.repo.ReportByID(reportID)
+
+	if err != nil {
+		return model.Report{}, err
+	}
+
+	return report, nil
+}
+
 func (s *ReportService) RegisterReport(report model.Report) error {
 	report.ID = uuid.Must(uuid.NewV4()).String()
 
