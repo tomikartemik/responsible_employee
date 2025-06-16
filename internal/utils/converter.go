@@ -29,6 +29,5 @@ func TaskToTaskShortInfo(task model.Task) model.TasksShortInfo {
 		ViolationID: task.ViolationID,
 		Violation:   task.Violation,
 		Points:      task.Points,
-		TimeLeft:    task.TimeLeft,
 	}
 }
