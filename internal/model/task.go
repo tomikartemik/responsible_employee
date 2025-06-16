@@ -23,5 +23,4 @@ type TasksShortInfo struct {
 	ViolationID int       `gorm:"not null" json:"violation_Id"`
 	Violation   Violation `gorm:"foreignKey:ViolationID" json:"violation"`
 	Points      int       `json:"points"`
-	TimeLeft    string    `gorm:"not null" json:"timeLeft"`
 }
