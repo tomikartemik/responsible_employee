@@ -13,6 +13,7 @@ type User struct {
 	Email            string `gorm:"not null" json:"email"`
 	Phone            string `gorm:"not null" json:"phone"`
 	Tasks            []Task `gorm:"foreignKey:ResponsiblePersonID" json:"tasks"`
+	MyTasks          []Task `gorm:"foreignKey:ReportedUserId" json:"myTasks"`
 	MonthlyPoints    int    `gorm:"not null" json:"monthlyPoints"`
 	MaxMonthlyPoints int    `gorm:"not null" json:"maxMonthlyPoints"`
 	YearlyPoints     int    `gorm:"not null" json:"yearlyPoints"`
@@ -47,6 +48,7 @@ type UserOutput struct {
 	Email            string `json:"email"`
 	Phone            string `json:"phone"`
 	Tasks            []Task `json:"tasks"`
+	MyTasks          []Task `json:"myTasks"`
 	MonthlyPoints    int    `json:"monthlyPoints"`
 	MaxMonthlyPoints int    `json:"maxMonthlyPoints"`
 	YearlyPoints     int    `json:"yearlyPoints"`
