@@ -3,6 +3,7 @@ package repository
 import (
 	"gorm.io/gorm"
 	"responsible_employee/internal/model"
+	"responsible_employee/internal/utils"
 )
 
 type QuestionRepository struct {
@@ -24,6 +25,15 @@ func (r *QuestionRepository) QuestionByID(questionID int) (model.QuestionOutput,
 	err = r.db.Where("question_id = ?", questionID).Find(&answers).Error
 	if err != nil {
 		return model.QuestionOutput{}, err
+	}
+
+	// Очистка и обновление, если нужно
+	for i := range answers {
+		cleaned := utils.CleanLegalRefs(answers[i].Text)
+		if answers[i].Text != cleaned {
+			answers[i].Text = cleaned
+			r.db.Model(&answers[i]).Update("text", cleaned) // обновляем только одно поле
+		}
 	}
 
 	return model.QuestionOutput{
