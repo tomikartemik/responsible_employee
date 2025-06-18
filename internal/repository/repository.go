@@ -63,4 +63,5 @@ type Message interface {
 
 type Question interface {
 	QuestionByID(questionID int) (model.QuestionOutput, error)
+	RandomQuestionIDs(limit int) ([]int, error)
 }

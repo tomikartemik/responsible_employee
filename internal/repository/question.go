@@ -31,3 +31,19 @@ func (r *QuestionRepository) QuestionByID(questionID int) (model.QuestionOutput,
 		Answers:  answers,
 	}, nil
 }
+
+func (r *QuestionRepository) RandomQuestionIDs(limit int) ([]int, error) {
+	var ids []int
+
+	err := r.db.Model(&model.Question{}).
+		Select("id").
+		Order("RANDOM()").
+		Limit(limit).
+		Pluck("id", &ids).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return ids, nil
+}

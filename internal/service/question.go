@@ -22,3 +22,21 @@ func (s *QuestionService) QuestionByID(questionID int) (model.QuestionOutput, er
 
 	return question, nil
 }
+
+func (s *QuestionService) GenerateTest() ([]model.QuestionOutput, error) {
+	questionIDs, err := s.repo.RandomQuestionIDs(10)
+	if err != nil {
+		return nil, err
+	}
+
+	var questions []model.QuestionOutput
+	for _, id := range questionIDs {
+		q, err := s.repo.QuestionByID(id)
+		if err != nil {
+			return nil, err
+		}
+		questions = append(questions, q)
+	}
+
+	return questions, nil
+}

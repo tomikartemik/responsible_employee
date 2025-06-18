@@ -32,3 +32,13 @@ func (h *Handler) GetQuestionById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, report)
 }
+
+func (h *Handler) GenerateTest(c *gin.Context) {
+	test, err := h.services.GenerateTest()
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, test)
+}
