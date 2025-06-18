@@ -28,6 +28,8 @@ func ConnectDB() (*gorm.DB, error) {
 		model.Report{},
 		model.Violation{},
 		model.Message{},
+		model.Question{},
+		model.AnswerOption{},
 	)
 
 	if err != nil {
