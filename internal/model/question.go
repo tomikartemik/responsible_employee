@@ -12,3 +12,8 @@ type AnswerOption struct {
 	Text       string `gorm:"not null" json:"text"`
 	IsCorrect  bool   `gorm:"not null" json:"is_correct"`
 }
+
+type QuestionOutput struct {
+	Question Question       `json:"question"`
+	Answers  []AnswerOption `json:"answers"`
+}

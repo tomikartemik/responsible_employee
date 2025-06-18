@@ -11,6 +11,7 @@ type Repository struct {
 	Report
 	Violation
 	Message
+	Question
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -20,6 +21,7 @@ func NewRepository(db *gorm.DB) *Repository {
 		Report:    NewReportRepository(db),
 		Violation: NewViolationRepository(db),
 		Message:   NewMessageRepository(db),
+		Question:  NewQuestionRepository(db),
 	}
 }
 
@@ -57,4 +59,8 @@ type Message interface {
 	CreateMessage(message model.Message) error
 	MessagesByUserID(userID string) ([]model.Message, error)
 	ReadMessage(messageID int) error
+}
+
+type Question interface {
+	QuestionByID(questionID int) (model.QuestionOutput, error)
 }

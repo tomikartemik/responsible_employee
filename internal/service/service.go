@@ -13,6 +13,7 @@ type Service struct {
 	Violation
 	Photo
 	Message
+	Question
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -23,6 +24,7 @@ func NewService(repos *repository.Repository) *Service {
 		Violation: NewViolationService(repos.Violation),
 		Photo:     NewPhotoService(repos.Task, repos.Report),
 		Message:   NewMessageService(repos.Message),
+		Question:  NewQuestionService(repos.Question),
 	}
 }
 
@@ -61,4 +63,8 @@ type Photo interface {
 type Message interface {
 	MessagesByUserID(userID string) ([]model.Message, error)
 	ReadMessage(messageID int) error
+}
+
+type Question interface {
+	QuestionByID(questionID int) (model.QuestionOutput, error)
 }
