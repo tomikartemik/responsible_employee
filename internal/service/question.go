@@ -48,13 +48,13 @@ func (s *QuestionService) CheckUserAnswers(userID string, answers model.TestInpu
 
 	user, err := s.repoUser.GetUserByID(userID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	for _, userAnswer := range answers.UserAnswers {
 		questionOutput, err := s.repo.QuestionByID(userAnswer.QuestionID)
 		if err != nil {
-			return err
+			return 0, err
 		}
 
 		var selectedAnswer *model.AnswerOption
@@ -70,5 +70,5 @@ func (s *QuestionService) CheckUserAnswers(userID string, answers model.TestInpu
 		}
 	}
 
-	return s.repoUser.UpdateUserPoints(utils.AddPoints(user, points))
+	return points, s.repoUser.UpdateUserPoints(utils.AddPoints(user, points))
 }
