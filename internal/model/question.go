@@ -17,3 +17,12 @@ type QuestionOutput struct {
 	Question Question       `json:"question"`
 	Answers  []AnswerOption `json:"answers"`
 }
+
+type UserAnswer struct {
+	QuestionID int `json:"question_id"`
+	AnswerID   int `json:"answer_id"`
+}
+
+type TestInput struct {
+	UserAnswers []UserAnswer `json:"user_answers"`
+}

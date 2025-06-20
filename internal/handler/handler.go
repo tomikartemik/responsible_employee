@@ -58,6 +58,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		authorized.GET("/report-by-id", h.GetReportById)
 		authorized.POST("/task-photo", h.UploadTaskPhoto)
 		authorized.POST("/report-photo", h.UploadReportPhoto)
+		authorized.POST("/answers", h.CheckAnswers)
 	}
 
 	task := router.Group("/task", h.UserIdentity)

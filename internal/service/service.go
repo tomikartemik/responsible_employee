@@ -24,7 +24,7 @@ func NewService(repos *repository.Repository) *Service {
 		Violation: NewViolationService(repos.Violation),
 		Photo:     NewPhotoService(repos.Task, repos.Report),
 		Message:   NewMessageService(repos.Message),
-		Question:  NewQuestionService(repos.Question),
+		Question:  NewQuestionService(repos.Question, repos.User),
 	}
 }
 
@@ -68,4 +68,5 @@ type Message interface {
 type Question interface {
 	QuestionByID(questionID int) (model.QuestionOutput, error)
 	GenerateTest() ([]model.QuestionOutput, error)
+	CheckUserAnswers(userID string, answers model.TestInput) (int, error)
 }
