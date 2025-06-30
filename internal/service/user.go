@@ -130,8 +130,8 @@ func (s *UserService) TakeTask(userID, taskID string) error {
 	return s.repoTask.UpdateTask(task)
 }
 
-func (s *UserService) ChangePasswordByMail(mail string) error {
-	user, err := s.repo.GetUserByUsername(mail)
+func (s *UserService) ChangePasswordByMail(username string) error {
+	user, err := s.repo.GetUserByUsername(username)
 	if err != nil {
 		return errors.New("Пользователя с таким именем не существует!")
 	}
@@ -156,7 +156,7 @@ func (s *UserService) ChangePasswordByMail(mail string) error {
 			"Subject: Ваш новый пароль\r\n"+
 			"MIME-Version: 1.0\r\n"+
 			"Content-Type: text/html; charset=\"UTF-8\"\r\n"+
-			"\r\n", mail, smtpUser)
+			"\r\n", user.Email, smtpUser)
 
 	// HTML-тело письма
 	body := fmt.Sprintf(`
@@ -195,7 +195,7 @@ func (s *UserService) ChangePasswordByMail(mail string) error {
 
 	msg := []byte(header + body)
 
-	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, smtpUser, []string{mail}, msg)
+	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, smtpUser, []string{user.Email}, msg)
 	if err != nil {
 		return err
 	}
