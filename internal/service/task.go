@@ -70,7 +70,7 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 	return taskID, nil
 }
 
-func (s *TaskService) GetAllTasks() ([]model.TasksShortInfo, error) {
+func (s *TaskService) GetAllTasksInfo() ([]model.TasksShortInfo, error) {
 	tasks, err := s.repo.GetAllTasks()
 
 	if err != nil {
@@ -83,6 +83,10 @@ func (s *TaskService) GetAllTasks() ([]model.TasksShortInfo, error) {
 	}
 
 	return taskShortInfo, nil
+}
+
+func (s *TaskService) GetAllTasks() ([]model.Task, error) {
+	return s.repo.GetAllTasks()
 }
 
 func (s *TaskService) TaskByID(taskID string) (model.Task, error) {
