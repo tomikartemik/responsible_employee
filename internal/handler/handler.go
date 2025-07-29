@@ -66,7 +66,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		task.POST("", h.CreateTask)
 		task.POST("/take", h.TakeTask)
 		task.POST("/complete", h.CompleteTask)
-		task.GET("/for-analise", h.GetTasksForAnalise)
 	}
 
 	global := router.Group("/global")
@@ -75,6 +74,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		global.GET("/task", h.GetTaskById)
 		global.GET("/question", h.GetQuestionById)
 		global.GET("/test", h.GenerateTest)
+		global.GET("/analise", h.GetTasksForAnalise)
 	}
 
 	violation := router.Group("/violation")
