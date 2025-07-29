@@ -24,7 +24,7 @@ func (r *TaskRepository) CreateTask(task model.Task) (string, error) {
 
 func (r *TaskRepository) GetAllTasksForAnalise() (model.Task, error) {
 	var task model.Task
-	err := r.db.Find(&task).Error
+	err := r.db.Preload("Violation").Find(&task).Error
 
 	if err != nil {
 		return model.Task{}, err
