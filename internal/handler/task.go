@@ -37,7 +37,7 @@ func (h *Handler) GetTaskById(c *gin.Context) {
 }
 
 func (h *Handler) GetTasksForAnalise(c *gin.Context) {
-	h.services.GetAllTasks()
+	h.services.GetAllTasksForAnalise()
 
 	c.JSON(http.StatusOK, h.services)
 }

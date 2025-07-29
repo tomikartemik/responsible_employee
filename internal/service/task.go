@@ -85,8 +85,8 @@ func (s *TaskService) GetAllTasksInfo() ([]model.TasksShortInfo, error) {
 	return taskShortInfo, nil
 }
 
-func (s *TaskService) GetAllTasks() ([]model.Task, error) {
-	return s.repo.GetAllTasks()
+func (s *TaskService) GetAllTasksForAnalise() (model.Task, error) {
+	return s.repo.GetAllTasksForAnalise()
 }
 
 func (s *TaskService) TaskByID(taskID string) (model.Task, error) {

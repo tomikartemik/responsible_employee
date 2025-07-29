@@ -22,6 +22,17 @@ func (r *TaskRepository) CreateTask(task model.Task) (string, error) {
 	return task.ID, nil
 }
 
+func (r *TaskRepository) GetAllTasksForAnalise() (model.Task, error) {
+	var task model.Task
+	err := r.db.Find(&task).Error
+
+	if err != nil {
+		return model.Task{}, err
+	}
+
+	return task, nil
+}
+
 func (r *TaskRepository) GetAllTasks() ([]model.Task, error) {
 	var tasks []model.Task
 

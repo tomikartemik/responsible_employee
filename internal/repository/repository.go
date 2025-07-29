@@ -41,6 +41,7 @@ type Task interface {
 	TaskByID(taskID string) (model.Task, error)
 	UpdateTask(task model.Task) error
 	AddPhotoToTask(taskID, photoUrl string) error
+	GetAllTasksForAnalise() (model.Task, error)
 }
 
 type Report interface {
