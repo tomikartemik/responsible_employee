@@ -85,7 +85,7 @@ func (s *TaskService) GetAllTasksInfo() ([]model.TasksShortInfo, error) {
 	return taskShortInfo, nil
 }
 
-func (s *TaskService) GetAllTasksForAnalise() (model.Task, error) {
+func (s *TaskService) GetAllTasksForAnalise() ([]model.Task, error) {
 	return s.repo.GetAllTasksForAnalise()
 }
 

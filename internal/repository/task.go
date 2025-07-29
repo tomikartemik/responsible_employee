@@ -22,12 +22,12 @@ func (r *TaskRepository) CreateTask(task model.Task) (string, error) {
 	return task.ID, nil
 }
 
-func (r *TaskRepository) GetAllTasksForAnalise() (model.Task, error) {
-	var task model.Task
+func (r *TaskRepository) GetAllTasksForAnalise() ([]model.Task, error) {
+	var task []model.Task
 	err := r.db.Preload("Violation").Find(&task).Error
 
 	if err != nil {
-		return model.Task{}, err
+		return []model.Task{}, err
 	}
 
 	return task, nil
