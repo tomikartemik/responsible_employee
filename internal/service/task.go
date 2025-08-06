@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gofrs/uuid"
 	"responsible_employee/internal/model"
@@ -96,12 +97,12 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 
 		reportedUser, err := s.repoUser.GetUserByID(task.ReportedUserId)
 		if err != nil {
-			return nil, err
+			return nil, errors.New(task.ReportedUserId)
 		}
 
 		responsiblePerson, err := s.repoUser.GetUserByID(task.ResponsiblePersonID)
 		if err != nil {
-			return nil, err
+			return nil, errors.New(task.ResponsiblePersonID)
 		}
 
 		taskForAnalise := model.TaskForAnalise{
