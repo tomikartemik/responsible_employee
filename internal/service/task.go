@@ -85,8 +85,40 @@ func (s *TaskService) GetAllTasksInfo() ([]model.TasksShortInfo, error) {
 	return taskShortInfo, nil
 }
 
-func (s *TaskService) GetAllTasksForAnalise() ([]model.Task, error) {
-	return s.repo.GetAllTasksForAnalise()
+func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
+	tasks, err := s.repo.GetAllTasksForAnalise()
+	if err != nil {
+		return []model.TaskForAnalise{}, err
+	}
+
+	tasksForAnalise := make([]model.TaskForAnalise, 0)
+	for _, task := range tasks {
+
+		reportedUser, err := s.repoUser.GetUserByID(task.ReportedUserId)
+		if err != nil {
+			return nil, err
+		}
+
+		responsiblePerson, err := s.repoUser.GetUserByID(task.ResponsiblePersonID)
+		if err != nil {
+			return nil, err
+		}
+
+		taskForAnalise := model.TaskForAnalise{
+			ID:                task.ID,
+			Violation:         task.Violation,
+			Description:       task.Description,
+			Suggestion:        task.Suggestion,
+			ImageUrl:          task.ImageUrl,
+			DateReported:      task.DateReported,
+			Status:            task.Status,
+			ReportedUser:      reportedUser.FullName,
+			ResponsiblePerson: responsiblePerson.FullName,
+		}
+
+		tasksForAnalise = append(tasksForAnalise, taskForAnalise)
+	}
+	return tasksForAnalise, nil
 }
 
 func (s *TaskService) TaskByID(taskID string) (model.Task, error) {
