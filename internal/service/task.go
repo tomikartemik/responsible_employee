@@ -100,9 +100,14 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			return nil, errors.New(task.ID)
 		}
 
-		responsiblePerson, err := s.repoUser.GetUserByID(task.ResponsiblePersonID)
-		if err != nil {
-			return nil, errors.New(task.ID)
+		responsiblePersonFullName := ""
+
+		if task.ResponsiblePersonID != "" {
+			responsiblePerson, err := s.repoUser.GetUserByID(task.ResponsiblePersonID)
+			if err != nil {
+				return nil, errors.New(task.ID)
+			}
+			responsiblePersonFullName = responsiblePerson.FullName
 		}
 
 		taskForAnalise := model.TaskForAnalise{
@@ -114,7 +119,7 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			DateReported:      task.DateReported,
 			Status:            task.Status,
 			ReportedUser:      reportedUser.FullName,
-			ResponsiblePerson: responsiblePerson.FullName,
+			ResponsiblePerson: responsiblePersonFullName,
 		}
 
 		tasksForAnalise = append(tasksForAnalise, taskForAnalise)
