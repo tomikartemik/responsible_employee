@@ -109,7 +109,7 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			Violation:         task.Violation,
 			Description:       task.Description,
 			Suggestion:        task.Suggestion,
-			ImageUrl:          task.ImageUrl,
+			ImageUrl:          "https://api.responsible-employee.xouston.com/" + task.ImageUrl,
 			DateReported:      task.DateReported,
 			Status:            task.Status,
 			ReportedUser:      reportedUser.FullName,
