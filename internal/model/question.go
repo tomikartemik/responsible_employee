@@ -26,3 +26,16 @@ type UserAnswer struct {
 type TestInput struct {
 	UserAnswers []UserAnswer `json:"user_answers"`
 }
+
+type WrongAnswer struct {
+	Question       Question       `json:"question"`
+	UserAnswer     AnswerOption   `json:"user_answer"`
+	CorrectAnswer  AnswerOption   `json:"correct_answer"`
+	AllAnswers     []AnswerOption `json:"all_answers"`
+}
+
+type TestResult struct {
+	Points        int            `json:"points"`
+	WrongAnswers  []WrongAnswer  `json:"wrong_answers"`
+	Message       string         `json:"message"`
+}

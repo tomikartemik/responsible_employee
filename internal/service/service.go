@@ -69,5 +69,5 @@ type Message interface {
 type Question interface {
 	QuestionByID(questionID int) (model.QuestionOutput, error)
 	GenerateTest() ([]model.QuestionOutput, error)
-	CheckUserAnswers(userID string, answers model.TestInput) (int, error)
+	CheckUserAnswers(userID string, answers model.TestInput) (model.TestResult, error)
 }

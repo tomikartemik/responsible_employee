@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"responsible_employee/internal/model"
@@ -65,11 +64,11 @@ func (h *Handler) CheckAnswers(c *gin.Context) {
 		return
 	}
 
-	points, err := h.services.CheckUserAnswers(userID, answers)
+	result, err := h.services.CheckUserAnswers(userID, answers)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, fmt.Sprintf("Получено %d баллов!", points))
+	c.JSON(http.StatusOK, result)
 }

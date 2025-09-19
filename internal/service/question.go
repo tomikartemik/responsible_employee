@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"responsible_employee/internal/model"
 	"responsible_employee/internal/repository"
 	"responsible_employee/internal/utils"
@@ -43,32 +44,62 @@ func (s *QuestionService) GenerateTest() ([]model.QuestionOutput, error) {
 	return questions, nil
 }
 
-func (s *QuestionService) CheckUserAnswers(userID string, answers model.TestInput) (int, error) {
+func (s *QuestionService) CheckUserAnswers(userID string, answers model.TestInput) (model.TestResult, error) {
 	points := 0
+	var wrongAnswers []model.WrongAnswer
 
 	user, err := s.repoUser.GetUserByID(userID)
 	if err != nil {
-		return 0, err
+		return model.TestResult{}, err
 	}
 
 	for _, userAnswer := range answers.UserAnswers {
 		questionOutput, err := s.repo.QuestionByID(userAnswer.QuestionID)
 		if err != nil {
-			return 0, err
+			return model.TestResult{}, err
 		}
 
 		var selectedAnswer *model.AnswerOption
+		var correctAnswer *model.AnswerOption
+		
 		for _, answer := range questionOutput.Answers {
 			if answer.ID == userAnswer.AnswerID {
 				selectedAnswer = &answer
-				break
+			}
+			if answer.IsCorrect {
+				correctAnswer = &answer
 			}
 		}
 
 		if selectedAnswer != nil && selectedAnswer.IsCorrect {
 			points += 10
+		} else {
+			// Добавляем неправильный ответ в список
+			if selectedAnswer != nil && correctAnswer != nil {
+				wrongAnswers = append(wrongAnswers, model.WrongAnswer{
+					Question:      questionOutput.Question,
+					UserAnswer:    *selectedAnswer,
+					CorrectAnswer: *correctAnswer,
+					AllAnswers:    questionOutput.Answers,
+				})
+			}
 		}
 	}
 
-	return points, s.repoUser.UpdateUserPoints(utils.AddPoints(user, points))
+	// Обновляем баллы пользователя
+	err = s.repoUser.UpdateUserPoints(utils.AddPoints(user, points))
+	if err != nil {
+		return model.TestResult{}, err
+	}
+
+	message := fmt.Sprintf("Получено %d баллов!", points)
+	if len(wrongAnswers) > 0 {
+		message += fmt.Sprintf(" Неправильных ответов: %d", len(wrongAnswers))
+	}
+
+	return model.TestResult{
+		Points:       points,
+		WrongAnswers: wrongAnswers,
+		Message:      message,
+	}, nil
 }
