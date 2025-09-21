@@ -43,6 +43,7 @@ type Task interface {
 	GetAllTasksInfo() ([]model.TasksShortInfo, error)
 	GetAllTasksForAnalise() ([]model.TaskForAnalise, error)
 	TaskByID(taskID string) (model.Task, error)
+	GetTasksWithCoordinates() ([]model.TaskWithCoordinates, error)
 }
 
 type Report interface {

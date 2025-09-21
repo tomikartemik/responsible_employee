@@ -46,3 +46,14 @@ func (h *Handler) GetTasksForAnalise(c *gin.Context) {
 
 	c.JSON(http.StatusOK, tasks)
 }
+
+func (h *Handler) GetTasksWithCoordinates(c *gin.Context) {
+	tasks, err := h.services.GetTasksWithCoordinates()
+
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, tasks)
+}

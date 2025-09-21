@@ -146,3 +146,29 @@ func (s *TaskService) TaskByID(taskID string) (model.Task, error) {
 	}
 	return task, nil
 }
+
+func (s *TaskService) GetTasksWithCoordinates() ([]model.TaskWithCoordinates, error) {
+	tasks, err := s.repo.GetTasksWithCoordinates()
+	if err != nil {
+		return []model.TaskWithCoordinates{}, err
+	}
+
+	var tasksWithCoords []model.TaskWithCoordinates
+	for _, task := range tasks {
+		// Проверяем, что координаты не nil (дополнительная проверка)
+		if task.Latitude != nil && task.Longitude != nil {
+			tasksWithCoords = append(tasksWithCoords, model.TaskWithCoordinates{
+				ID:            task.ID,
+				Description:   task.Description,
+				Status:        task.Status,
+				DateReported:  task.DateReported,
+				Latitude:      *task.Latitude,
+				Longitude:     *task.Longitude,
+				Violation:     task.Violation,
+				ImageUrl:      task.ImageUrl,
+			})
+		}
+	}
+
+	return tasksWithCoords, nil
+}

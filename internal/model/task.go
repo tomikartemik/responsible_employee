@@ -40,3 +40,14 @@ type TasksShortInfo struct {
 	Violation   Violation `gorm:"foreignKey:ViolationID" json:"violation"`
 	Points      int       `json:"points"`
 }
+
+type TaskWithCoordinates struct {
+	ID          string    `json:"id"`
+	Description string    `json:"description"`
+	Status      string    `json:"status"`
+	DateReported time.Time `json:"dateReported"`
+	Latitude    float64   `json:"latitude"`
+	Longitude   float64   `json:"longitude"`
+	Violation   Violation `json:"violation"`
+	ImageUrl    string    `json:"imageUrl,omitempty"`
+}

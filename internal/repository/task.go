@@ -62,3 +62,19 @@ func (r *TaskRepository) AddPhotoToTask(taskID, photoUrl string) error {
 func (r *TaskRepository) UpdateTask(task model.Task) error {
 	return r.db.Save(&task).Error
 }
+
+func (r *TaskRepository) GetTasksWithCoordinates() ([]model.Task, error) {
+	var tasks []model.Task
+	
+	err := r.db.
+		Where("latitude IS NOT NULL AND longitude IS NOT NULL").
+		Where("status = ?", "Active").
+		Preload("Violation").
+		Find(&tasks).Error
+	
+	if err != nil {
+		return []model.Task{}, err
+	}
+	
+	return tasks, nil
+}
