@@ -29,6 +29,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}))
 
 	router.Static("/uploads", "./uploads")
+	router.StaticFile("/map", "./map.html")
 
 	user := router.Group("/user")
 	{

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Точки на карте</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <style>
+        #map { width: 100%; height: 600px; }
+    </style>
+</head>
+<body>
+<h2>Карта проблем</h2>
+<div id="map"></div>
+
+<script>
+    ymaps.ready(init);
+
+    function init() {
+        const map = new ymaps.Map("map", {
+            center: [55.7558, 37.6176], // дефолтный центр
+            zoom: 5
+        });
+
+        // грузим твои точки
+        fetch("https://api.responsible-employee.xouston.com/global/map-points")
+            .then(res => res.json())
+            .then(points => {
+                if (!points || points.length === 0) {
+                    console.log("Нет точек");
+                    return;
+                }
+
+                points.forEach(p => {
+                    const placemark = new ymaps.Placemark(
+                        [p.latitude, p.longitude], // порядок [lat, lon] !
+                        { balloonContent: `Координаты: ${p.latitude}, ${p.longitude}` }
+                    );
+                    map.geoObjects.add(placemark);
+                });
+
+                // центрируем карту по первой точке
+                if (points.length > 0) {
+                    map.setCenter([points[0].latitude, points[0].longitude], 10);
+                }
+            })
+            .catch(err => console.error("Ошибка загрузки точек:", err));
+    }
+</script>
+</body>
+</html>
