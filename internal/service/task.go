@@ -27,6 +27,16 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 	task.EndDate = task.DateReported.Add(48 * time.Hour)
 	task.ReportedUserId = reportedUserID
 
+	// Валидация координат, если они предоставлены
+	if task.Latitude != nil && task.Longitude != nil {
+		if *task.Latitude < -90 || *task.Latitude > 90 {
+			return "", errors.New("широта должна быть в диапазоне от -90 до 90")
+		}
+		if *task.Longitude < -180 || *task.Longitude > 180 {
+			return "", errors.New("долгота должна быть в диапазоне от -180 до 180")
+		}
+	}
+
 	violation, err := s.repoViolation.GetViolationByID(task.ViolationID)
 	if err != nil {
 		return "", err
@@ -120,6 +130,8 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			Status:            task.Status,
 			ReportedUser:      reportedUser.FullName,
 			ResponsiblePerson: responsiblePersonFullName,
+			Latitude:          task.Latitude,
+			Longitude:         task.Longitude,
 		}
 
 		tasksForAnalise = append(tasksForAnalise, taskForAnalise)
