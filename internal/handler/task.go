@@ -57,3 +57,14 @@ func (h *Handler) GetTasksWithCoordinates(c *gin.Context) {
 
 	c.JSON(http.StatusOK, tasks)
 }
+
+func (h *Handler) GetMapPoints(c *gin.Context) {
+	points, err := h.services.GetMapPoints()
+
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, points)
+}

@@ -51,3 +51,8 @@ type TaskWithCoordinates struct {
 	Violation   Violation `json:"violation"`
 	ImageUrl    string    `json:"imageUrl,omitempty"`
 }
+
+type MapPoint struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}

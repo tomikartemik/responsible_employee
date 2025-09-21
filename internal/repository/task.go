@@ -68,7 +68,6 @@ func (r *TaskRepository) GetTasksWithCoordinates() ([]model.Task, error) {
 	
 	err := r.db.
 		Where("latitude IS NOT NULL AND longitude IS NOT NULL").
-		Where("status = ?", "Active").
 		Preload("Violation").
 		Find(&tasks).Error
 	
@@ -77,4 +76,19 @@ func (r *TaskRepository) GetTasksWithCoordinates() ([]model.Task, error) {
 	}
 	
 	return tasks, nil
+}
+
+func (r *TaskRepository) GetMapPoints() ([]model.MapPoint, error) {
+	var points []model.MapPoint
+	
+	err := r.db.Model(&model.Task{}).
+		Select("latitude, longitude").
+		Where("latitude IS NOT NULL AND longitude IS NOT NULL").
+		Scan(&points).Error
+	
+	if err != nil {
+		return []model.MapPoint{}, err
+	}
+	
+	return points, nil
 }

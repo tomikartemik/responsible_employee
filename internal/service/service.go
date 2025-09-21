@@ -44,6 +44,7 @@ type Task interface {
 	GetAllTasksForAnalise() ([]model.TaskForAnalise, error)
 	TaskByID(taskID string) (model.Task, error)
 	GetTasksWithCoordinates() ([]model.TaskWithCoordinates, error)
+	GetMapPoints() ([]model.MapPoint, error)
 }
 
 type Report interface {

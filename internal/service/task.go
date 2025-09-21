@@ -155,7 +155,6 @@ func (s *TaskService) GetTasksWithCoordinates() ([]model.TaskWithCoordinates, er
 
 	var tasksWithCoords []model.TaskWithCoordinates
 	for _, task := range tasks {
-		// Проверяем, что координаты не nil (дополнительная проверка)
 		if task.Latitude != nil && task.Longitude != nil {
 			tasksWithCoords = append(tasksWithCoords, model.TaskWithCoordinates{
 				ID:            task.ID,
@@ -171,4 +170,8 @@ func (s *TaskService) GetTasksWithCoordinates() ([]model.TaskWithCoordinates, er
 	}
 
 	return tasksWithCoords, nil
+}
+
+func (s *TaskService) GetMapPoints() ([]model.MapPoint, error) {
+	return s.repo.GetMapPoints()
 }

@@ -43,6 +43,7 @@ type Task interface {
 	AddPhotoToTask(taskID, photoUrl string) error
 	GetAllTasksForAnalise() ([]model.Task, error)
 	GetTasksWithCoordinates() ([]model.Task, error)
+	GetMapPoints() ([]model.MapPoint, error)
 }
 
 type Report interface {
