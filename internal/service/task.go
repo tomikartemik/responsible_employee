@@ -15,10 +15,11 @@ type TaskService struct {
 	repoViolation repository.Violation
 	repoUser      repository.User
 	repoMessage   repository.Message
+	repoReport    repository.Report
 }
 
-func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message) *TaskService {
-	return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage}
+func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message, repoReport repository.Report) *TaskService {
+    return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage, repoReport: repoReport}
 }
 
 func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string, error) {
@@ -132,6 +133,19 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			ResponsiblePerson: responsiblePersonFullName,
 			Latitude:          task.Latitude,
 			Longitude:         task.Longitude,
+		}
+
+		// добавляем ссылку на фото о выполнении, если есть отчет с картинкой
+		if task.ReportID != "" {
+			report, err := s.repoReport.ReportByID(task.ReportID)
+			if err == nil {
+				if report.ImageUrl != "" {
+				taskForAnalise.CompletedImageUrl = "https://api.responsible-employee.xouston.com/" + report.ImageUrl
+				}
+				if report.Comment != "" {
+					taskForAnalise.CompletedComment = report.Comment
+				}
+			}
 		}
 
 		tasksForAnalise = append(tasksForAnalise, taskForAnalise)

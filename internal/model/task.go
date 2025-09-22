@@ -32,6 +32,8 @@ type TaskForAnalise struct {
 	ResponsiblePerson string     `json:"responsiblePerson" gorm:"default:null"`
 	Latitude          *float64   `json:"latitude,omitempty"`
 	Longitude         *float64   `json:"longitude,omitempty"`
+    CompletedImageUrl string     `json:"completedImageUrl,omitempty"`
+    CompletedComment  string     `json:"completedComment,omitempty"`
 }
 
 type TasksShortInfo struct {
