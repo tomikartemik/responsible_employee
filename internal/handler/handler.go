@@ -78,6 +78,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		global.GET("/analise", h.GetTasksForAnalise)
 		global.GET("/tasks-map", h.GetTasksWithCoordinates)
 		global.GET("/map-points", h.GetMapPoints)
+		global.GET("/points-summary", h.GetPointsSummary)
 	}
 
 	violation := router.Group("/violation")

@@ -14,17 +14,19 @@ type Service struct {
 	Photo
 	Message
 	Question
+    Points
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		User:      NewUserService(repos.User, repos.Task, repos.Violation),
-        Task:      NewTaskService(repos.Task, repos.Violation, repos.User, repos.Message, repos.Report),
-		Report:    NewReportService(repos.Report, repos.Task, repos.User, repos.Message),
+        Task:      NewTaskService(repos.Task, repos.Violation, repos.User, repos.Message, repos.Report, repos.PointEvent),
+        Report:    NewReportService(repos.Report, repos.Task, repos.User, repos.Message, repos.PointEvent),
 		Violation: NewViolationService(repos.Violation),
 		Photo:     NewPhotoService(repos.Task, repos.Report),
 		Message:   NewMessageService(repos.Message),
-		Question:  NewQuestionService(repos.Question, repos.User),
+        Question:  NewQuestionService(repos.Question, repos.User, repos.PointEvent),
+        Points:    NewPointsService(repos.User, repos.PointEvent),
 	}
 }
 
@@ -72,4 +74,13 @@ type Question interface {
 	QuestionByID(questionID int) (model.QuestionOutput, error)
 	GenerateTest() ([]model.QuestionOutput, error)
 	CheckUserAnswers(userID string, answers model.TestInput) (model.TestResult, error)
+}
+
+type Points interface {
+    Summary(month int, year int) ([]model.UserPointsBreakdown, error)
+}
+
+// Facade helper for handlers
+func (s *Service) PointsSummary(month int, year int) ([]model.UserPointsBreakdown, error) {
+    return s.Points.Summary(month, year)
 }

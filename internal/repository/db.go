@@ -30,6 +30,8 @@ func ConnectDB() (*gorm.DB, error) {
 		model.Message{},
 		model.Question{},
 		model.AnswerOption{},
+		model.PointEvent{},
+		model.Meta{},
 	)
 
 	if err != nil {

@@ -16,10 +16,11 @@ type TaskService struct {
 	repoUser      repository.User
 	repoMessage   repository.Message
 	repoReport    repository.Report
+    repoPointEvent repository.PointEvent
 }
 
-func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message, repoReport repository.Report) *TaskService {
-    return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage, repoReport: repoReport}
+func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message, repoReport repository.Report, repoPointEvent repository.PointEvent) *TaskService {
+    return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage, repoReport: repoReport, repoPointEvent: repoPointEvent}
 }
 
 func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string, error) {
@@ -59,12 +60,15 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 		return "", err
 	}
 
-	user = utils.AddPoints(user, points)
-	err = s.repoUser.UpdateUserPoints(user)
+    user = utils.AddPoints(user, points)
+    err = s.repoUser.UpdateUserPoints(user)
 
 	if err != nil {
 		return "", err
 	}
+
+    // Логируем событие начисления баллов за создание задачи
+    _ = s.repoPointEvent.Create(model.PointEvent{UserID: task.ReportedUserId, Source: utils.PointsSourceCreateTask, Points: points, TaskID: &task.ID})
 
 	err = s.repoMessage.CreateMessage(model.Message{
 		UserID: task.ReportedUserId,

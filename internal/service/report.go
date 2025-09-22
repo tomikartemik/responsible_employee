@@ -15,10 +15,11 @@ type ReportService struct {
 	repoTask    repository.Task
 	repoUser    repository.User
 	repoMessage repository.Message
+    repoPointEvent repository.PointEvent
 }
 
-func NewReportService(repo repository.Report, repoTask repository.Task, repoUser repository.User, repoMessage repository.Message) *ReportService {
-	return &ReportService{repo: repo, repoTask: repoTask, repoUser: repoUser, repoMessage: repoMessage}
+func NewReportService(repo repository.Report, repoTask repository.Task, repoUser repository.User, repoMessage repository.Message, repoPointEvent repository.PointEvent) *ReportService {
+    return &ReportService{repo: repo, repoTask: repoTask, repoUser: repoUser, repoMessage: repoMessage, repoPointEvent: repoPointEvent}
 }
 
 func (s *ReportService) ReportByID(reportID string) (model.Report, error) {
@@ -74,12 +75,15 @@ func (s *ReportService) RegisterReport(report model.Report) error {
 		return err
 	}
 
-	user = utils.AddPoints(user, task.Points)
-	err = s.repoUser.UpdateUserPoints(user)
+    user = utils.AddPoints(user, task.Points)
+    err = s.repoUser.UpdateUserPoints(user)
 
 	if err != nil {
 		return err
 	}
+
+    // Логируем событие начисления баллов за выполнение
+    _ = s.repoPointEvent.Create(model.PointEvent{UserID: task.ResponsiblePersonID, Source: utils.PointsSourceCompleteTask, Points: task.Points, TaskID: &task.ID, ReportID: &report.ID})
 
 	return nil
 }

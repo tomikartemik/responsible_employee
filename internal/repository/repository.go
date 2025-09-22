@@ -12,6 +12,8 @@ type Repository struct {
 	Violation
 	Message
 	Question
+    PointEvent
+    Meta
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -22,6 +24,8 @@ func NewRepository(db *gorm.DB) *Repository {
 		Violation: NewViolationRepository(db),
 		Message:   NewMessageRepository(db),
 		Question:  NewQuestionRepository(db),
+        PointEvent: NewPointEventRepository(db),
+        Meta:       NewMetaRepository(db),
 	}
 }
 
@@ -67,4 +71,14 @@ type Message interface {
 type Question interface {
 	QuestionByID(questionID int) (model.QuestionOutput, error)
 	RandomQuestionIDs(limit int) ([]int, error)
+}
+
+type PointEvent interface {
+    Create(event model.PointEvent) error
+    EventsSince(start time.Time) ([]model.PointEvent, error)
+}
+
+type Meta interface {
+    Get(key string) (model.Meta, error)
+    Set(key, value string) error
 }

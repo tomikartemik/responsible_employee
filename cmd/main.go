@@ -32,6 +32,10 @@ func main() {
 	taskChecker.Start()
 	defer taskChecker.Stop()
 
+	monthlyResetter := utils.NewMonthlyResetter(db)
+	monthlyResetter.Start()
+	defer monthlyResetter.Stop()
+
 	srv := new(internal.Server)
 	if err := srv.Run(os.Getenv("PORT"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running server %s", err.Error())
