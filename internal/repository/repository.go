@@ -1,9 +1,9 @@
 package repository
 
 import (
-    "time"
-    "gorm.io/gorm"
-    "responsible_employee/internal/model"
+	"gorm.io/gorm"
+	"responsible_employee/internal/model"
+	"time"
 )
 
 type Repository struct {
@@ -13,20 +13,20 @@ type Repository struct {
 	Violation
 	Message
 	Question
-    PointEvent
-    Meta
+	PointEvent
+	Meta
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		User:      NewUserRepository(db),
-		Task:      NewTaskRepository(db),
-		Report:    NewReportRepository(db),
-		Violation: NewViolationRepository(db),
-		Message:   NewMessageRepository(db),
-		Question:  NewQuestionRepository(db),
-        PointEvent: NewPointEventRepository(db),
-        Meta:       NewMetaRepository(db),
+		User:       NewUserRepository(db),
+		Task:       NewTaskRepository(db),
+		Report:     NewReportRepository(db),
+		Violation:  NewViolationRepository(db),
+		Message:    NewMessageRepository(db),
+		Question:   NewQuestionRepository(db),
+		PointEvent: NewPointEventRepository(db),
+		Meta:       NewMetaRepository(db),
 	}
 }
 
@@ -55,6 +55,7 @@ type Report interface {
 	CreateReport(report model.Report) error
 	ReportByID(reportID string) (model.Report, error)
 	UpdateReport(report model.Report) error
+	AddPhotoToReport(reportID, photoUrl string) error
 }
 
 type Violation interface {
@@ -75,11 +76,11 @@ type Question interface {
 }
 
 type PointEvent interface {
-    Create(event model.PointEvent) error
-    EventsSince(start time.Time) ([]model.PointEvent, error)
+	Create(event model.PointEvent) error
+	EventsSince(start time.Time) ([]model.PointEvent, error)
 }
 
 type Meta interface {
-    Get(key string) (model.Meta, error)
-    Set(key, value string) error
+	Get(key string) (model.Meta, error)
+	Set(key, value string) error
 }

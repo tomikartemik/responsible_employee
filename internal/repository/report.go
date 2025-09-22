@@ -28,6 +28,10 @@ func (r *ReportRepository) ReportByID(reportID string) (model.Report, error) {
 	return report, nil
 }
 
+func (r *ReportRepository) AddPhotoToReport(reportID, photoUrl string) error {
+	return r.db.Model(model.Report{}).Where("id = ?", reportID).Update("image_url", photoUrl).Error
+}
+
 func (r *ReportRepository) UpdateReport(report model.Report) error {
 	return r.db.Save(&report).Error
 }

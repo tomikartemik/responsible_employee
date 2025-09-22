@@ -14,13 +14,13 @@ func (h *Handler) UploadTaskPhoto(c *gin.Context) {
 		return
 	}
 
-	err = h.services.SaveTaskPhoto(taskID, photo)
-	if err != nil {
+    path, err := h.services.SaveTaskPhoto(taskID, photo)
+    if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, "Saved photo successfully")
+    c.JSON(http.StatusOK, gin.H{"message": "Saved photo successfully", "url": absoluteURL(path)})
 }
 
 func (h *Handler) UploadReportPhoto(c *gin.Context) {
@@ -32,11 +32,16 @@ func (h *Handler) UploadReportPhoto(c *gin.Context) {
 		return
 	}
 
-	err = h.services.SaveReportPhoto(reportID, photo)
-	if err != nil {
+    path, err := h.services.SaveReportPhoto(reportID, photo)
+    if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, "Saved photo successfully")
+    c.JSON(http.StatusOK, gin.H{"message": "Saved photo successfully", "url": absoluteURL(path)})
+}
+
+func absoluteURL(path string) string {
+    if path == "" { return "" }
+    return "https://api.responsible-employee.xouston.com/" + path
 }

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -8,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"responsible_employee/internal/repository"
+	"strings"
 	"time"
 )
 
@@ -20,42 +22,37 @@ func NewPhotoService(repoTask repository.Task, repoReport repository.Report) *Ph
 	return &PhotoService{repoTask: repoTask, repoReport: repoReport}
 }
 
-func (s *PhotoService) SaveTaskPhoto(taskID string, photo *multipart.FileHeader) error {
+func (s *PhotoService) SaveTaskPhoto(taskID string, photo *multipart.FileHeader) (string, error) {
 	path, err := s.savePhoto(photo)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = s.repoTask.AddPhotoToTask(taskID, path)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return path, nil
 }
 
-func (s *PhotoService) SaveReportPhoto(reportID string, photo *multipart.FileHeader) error {
+func (s *PhotoService) SaveReportPhoto(reportID string, photo *multipart.FileHeader) (string, error) {
 	path, err := s.savePhoto(photo)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	report, err := s.repoReport.ReportByID(reportID)
+	err = s.repoReport.AddPhotoToReport(reportID, path)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	report.ImageUrl = path
-
-	err = s.repoReport.UpdateReport(report)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return path, nil
 }
 
 func (s *PhotoService) savePhoto(file *multipart.FileHeader) (string, error) {
+	// Валидация расширения
+	allowed := map[string]bool{".jpg": true, ".jpeg": true, ".png": true, ".webp": true}
 	src, err := file.Open()
 	if err != nil {
 		return "", fmt.Errorf("unable to open file: %v", err)
@@ -63,6 +60,9 @@ func (s *PhotoService) savePhoto(file *multipart.FileHeader) (string, error) {
 	defer src.Close()
 
 	ext := filepath.Ext(file.Filename)
+	if !allowed[strings.ToLower(ext)] {
+		return "", errors.New("unsupported file type")
+	}
 	timestamp := time.Now().Unix()
 	randomSuffix := rand.Intn(1000)
 	newFileName := fmt.Sprintf("photo_%d_%03d%s", timestamp, randomSuffix, ext)

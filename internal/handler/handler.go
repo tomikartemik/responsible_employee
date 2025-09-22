@@ -19,6 +19,8 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 
 	router := gin.New()
+    // Ограничение размера multipart (например, 10 МБ)
+    router.MaxMultipartMemory = 10 << 20
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},

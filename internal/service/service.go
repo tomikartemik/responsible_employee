@@ -61,8 +61,8 @@ type Violation interface {
 }
 
 type Photo interface {
-	SaveTaskPhoto(taskID string, photo *multipart.FileHeader) error
-	SaveReportPhoto(reportID string, photo *multipart.FileHeader) error
+    SaveTaskPhoto(taskID string, photo *multipart.FileHeader) (string, error)
+    SaveReportPhoto(reportID string, photo *multipart.FileHeader) (string, error)
 }
 
 type Message interface {
