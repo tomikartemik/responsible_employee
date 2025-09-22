@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"gorm.io/gorm"
-	"responsible_employee/internal/model"
+    "time"
+    "gorm.io/gorm"
+    "responsible_employee/internal/model"
 )
 
 type Repository struct {
