@@ -31,7 +31,7 @@ func (r *ReportRepository) ReportByID(reportID string) (model.Report, error) {
 
 func (r *ReportRepository) AddPhotoToReport(reportID, photoUrl string) error {
 	fmt.Println(photoUrl)
-	return r.db.Model(model.Report{}).Where("id = ?", reportID).Update("image_url", photoUrl).Error
+	return r.db.Model(model.Report{}).Where("task_id = ?", reportID).Update("image_url", photoUrl).Error
 }
 
 func (r *ReportRepository) UpdateReport(report model.Report) error {
