@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"responsible_employee/internal/model"
 )
@@ -29,6 +30,7 @@ func (r *ReportRepository) ReportByID(reportID string) (model.Report, error) {
 }
 
 func (r *ReportRepository) AddPhotoToReport(reportID, photoUrl string) error {
+	fmt.Println(photoUrl)
 	return r.db.Model(model.Report{}).Where("id = ?", reportID).Update("image_url", photoUrl).Error
 }
 

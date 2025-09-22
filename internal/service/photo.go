@@ -42,10 +42,13 @@ func (s *PhotoService) SaveReportPhoto(reportID string, photo *multipart.FileHea
 		return "", err
 	}
 
+	fmt.Println(path)
+
 	err = s.repoReport.AddPhotoToReport(reportID, path)
 	if err != nil {
 		return "", err
 	}
+	fmt.Println(path)
 
 	return path, nil
 }
