@@ -69,6 +69,8 @@ func (s *PointsService) Summary(month int, year int) ([]model.UserPointsBreakdow
             FullName:        u.FullName,
             MonthlyTotal:    monthlyTotals[u.ID],
             YearlyTotal:     yearlyTotals[u.ID],
+            LastMonthTotal:  u.LastMonthPoints,
+            LastYearTotal:   u.LastYearPoints,
             MonthlyBySource: monthlyByUser[u.ID],
             YearlyBySource:  yearlyByUser[u.ID],
         })

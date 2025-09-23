@@ -31,6 +31,8 @@ func (s *UserService) SignUp(userData model.User) error {
 	userData.YearlyPoints = 0
 	userData.MaxMonthlyPoints = 0
 	userData.MaxYearlyPoints = 0
+	userData.LastMonthPoints = 0
+	userData.LastYearPoints = 0
 	userData.Rank = 1
 	return s.repo.SignUp(userData)
 }
@@ -100,7 +102,15 @@ func (s *UserService) GetUsersSortedByPoints() ([]model.UserInfoTable, error) {
 	}
 
 	for _, user := range users {
-		tableInfo = append(tableInfo, model.UserInfoTable{ID: user.ID, Login: user.Login, Image: user.Image, MonthlyPoints: user.MonthlyPoints, YearlyPoints: user.YearlyPoints})
+		tableInfo = append(tableInfo, model.UserInfoTable{
+			ID: user.ID, 
+			Login: user.Login, 
+			Image: user.Image, 
+			MonthlyPoints: user.MonthlyPoints, 
+			YearlyPoints: user.YearlyPoints,
+			LastMonthPoints: user.LastMonthPoints,
+			LastYearPoints: user.LastYearPoints,
+		})
 	}
 
 	return tableInfo, nil

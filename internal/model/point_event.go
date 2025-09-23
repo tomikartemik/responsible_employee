@@ -18,6 +18,8 @@ type UserPointsBreakdown struct {
     FullName            string         `json:"fullName"`
     MonthlyTotal        int            `json:"monthlyTotal"`
     YearlyTotal         int            `json:"yearlyTotal"`
+    LastMonthTotal      int            `json:"lastMonthTotal"`
+    LastYearTotal       int            `json:"lastYearTotal"`
     MonthlyBySource     map[string]int `json:"monthlyBySource"`
     YearlyBySource      map[string]int `json:"yearlyBySource"`
 }

@@ -48,9 +48,14 @@ func (r *MonthlyResetter) tryReset() {
         return // already reset this month
     }
 
-    // reset monthly points for all users
+    // Сначала сохраняем текущие месячные баллы в last_month_points, затем обнуляем monthly_points
+    if err := r.db.Model(&model.User{}).Update("last_month_points", gorm.Expr("monthly_points")).Error; err != nil {
+        fmt.Println("monthly reset error (preserve):", err)
+        return
+    }
+    
     if err := r.db.Model(&model.User{}).Update("monthly_points", 0).Error; err != nil {
-        fmt.Println("monthly reset error:", err)
+        fmt.Println("monthly reset error (zero):", err)
         return
     }
 

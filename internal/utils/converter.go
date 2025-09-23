@@ -19,6 +19,8 @@ func UserToUserOutput(user model.User) model.UserOutput {
 		YearlyPoints:     user.YearlyPoints,
 		MaxMonthlyPoints: user.MaxMonthlyPoints,
 		MaxYearlyPoints:  user.MaxYearlyPoints,
+		LastMonthPoints:  user.LastMonthPoints,
+		LastYearPoints:   user.LastYearPoints,
 		Rank:             user.Rank,
 	}
 }

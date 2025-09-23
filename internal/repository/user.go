@@ -84,6 +84,8 @@ func (r *UserRepository) UpdateUserPoints(user model.User) error {
 		Update("yearly_points", user.YearlyPoints).
 		Update("max_monthly_points", user.MaxMonthlyPoints).
 		Update("max_yearly_points", user.MaxYearlyPoints).
+		Update("last_month_points", user.LastMonthPoints).
+		Update("last_year_points", user.LastYearPoints).
 		Update("rank", user.Rank).
 		Error
 }

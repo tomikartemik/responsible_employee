@@ -18,6 +18,8 @@ type User struct {
 	MaxMonthlyPoints int    `gorm:"not null" json:"maxMonthlyPoints"`
 	YearlyPoints     int    `gorm:"not null" json:"yearlyPoints"`
 	MaxYearlyPoints  int    `gorm:"not null" json:"maxYearlyPoints"`
+	LastMonthPoints  int    `gorm:"not null" json:"lastMonthPoints"`
+	LastYearPoints   int    `gorm:"not null" json:"lastYearPoints"`
 	Rank             int    `json:"rank"`
 }
 
@@ -53,6 +55,8 @@ type UserOutput struct {
 	MaxMonthlyPoints int    `json:"maxMonthlyPoints"`
 	YearlyPoints     int    `json:"yearlyPoints"`
 	MaxYearlyPoints  int    `json:"maxYearlyPoints"`
+	LastMonthPoints  int    `json:"lastMonthPoints"`
+	LastYearPoints   int    `json:"lastYearPoints"`
 	Rank             int    `json:"rank"`
 }
 
@@ -62,4 +66,6 @@ type UserInfoTable struct {
 	Image         string `json:"image"`
 	MonthlyPoints int    `json:"monthlyPoints"`
 	YearlyPoints  int    `json:"yearlyPoints"`
+	LastMonthPoints int  `json:"lastMonthPoints"`
+	LastYearPoints  int  `json:"lastYearPoints"`
 }
