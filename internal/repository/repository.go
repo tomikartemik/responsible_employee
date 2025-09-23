@@ -3,7 +3,6 @@ package repository
 import (
 	"gorm.io/gorm"
 	"responsible_employee/internal/model"
-	"time"
 )
 
 type Repository struct {
@@ -13,20 +12,18 @@ type Repository struct {
 	Violation
 	Message
 	Question
-	PointEvent
 	Meta
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		User:       NewUserRepository(db),
-		Task:       NewTaskRepository(db),
-		Report:     NewReportRepository(db),
-		Violation:  NewViolationRepository(db),
-		Message:    NewMessageRepository(db),
-		Question:   NewQuestionRepository(db),
-		PointEvent: NewPointEventRepository(db),
-		Meta:       NewMetaRepository(db),
+		User:      NewUserRepository(db),
+		Task:      NewTaskRepository(db),
+		Report:    NewReportRepository(db),
+		Violation: NewViolationRepository(db),
+		Message:   NewMessageRepository(db),
+		Question:  NewQuestionRepository(db),
+		Meta:      NewMetaRepository(db),
 	}
 }
 
@@ -38,6 +35,7 @@ type User interface {
 	ChangePassword(userID string, password string) error
 	GetUsersSortedByPoints() ([]model.User, error)
 	UpdateUserPoints(user model.User) error
+	GetAllUsers() ([]model.User, error)
 }
 
 type Task interface {
@@ -73,11 +71,6 @@ type Message interface {
 type Question interface {
 	QuestionByID(questionID int) (model.QuestionOutput, error)
 	RandomQuestionIDs(limit int) ([]int, error)
-}
-
-type PointEvent interface {
-	Create(event model.PointEvent) error
-	EventsSince(start time.Time) ([]model.PointEvent, error)
 }
 
 type Meta interface {

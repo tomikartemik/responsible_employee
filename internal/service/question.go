@@ -10,11 +10,10 @@ import (
 type QuestionService struct {
 	repo     repository.Question
 	repoUser repository.User
-    repoPointEvent repository.PointEvent
 }
 
-func NewQuestionService(repo repository.Question, repoUser repository.User, repoPointEvent repository.PointEvent) *QuestionService {
-    return &QuestionService{repo: repo, repoUser: repoUser, repoPointEvent: repoPointEvent}
+func NewQuestionService(repo repository.Question, repoUser repository.User) *QuestionService {
+	return &QuestionService{repo: repo, repoUser: repoUser}
 }
 
 func (s *QuestionService) QuestionByID(questionID int) (model.QuestionOutput, error) {
@@ -62,7 +61,7 @@ func (s *QuestionService) CheckUserAnswers(userID string, answers model.TestInpu
 
 		var selectedAnswer *model.AnswerOption
 		var correctAnswer *model.AnswerOption
-		
+
 		for _, answer := range questionOutput.Answers {
 			if answer.ID == userAnswer.AnswerID {
 				selectedAnswer = &answer
@@ -87,15 +86,12 @@ func (s *QuestionService) CheckUserAnswers(userID string, answers model.TestInpu
 		}
 	}
 
-    // Обновляем баллы пользователя
-    updated := utils.AddPoints(user, points)
-    err = s.repoUser.UpdateUserPoints(updated)
+	// Обновляем баллы пользователя
+	updated := utils.AddPoints(user, points)
+	err = s.repoUser.UpdateUserPoints(updated)
 	if err != nil {
 		return model.TestResult{}, err
 	}
-
-    // Логируем событие начисления баллов за тест
-    _ = s.repoPointEvent.Create(model.PointEvent{UserID: user.ID, Source: utils.PointsSourceTest, Points: points})
 
 	message := fmt.Sprintf("Получено %d баллов!", points)
 	if len(wrongAnswers) > 0 {

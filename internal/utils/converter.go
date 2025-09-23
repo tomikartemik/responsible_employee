@@ -33,3 +33,14 @@ func TaskToTaskShortInfo(task model.Task) model.TasksShortInfo {
 		Points:      task.Points,
 	}
 }
+
+func UserToUserPoints(user model.User) model.UserPoints {
+	return model.UserPoints{
+		UserID:         user.ID,
+		FullName:       user.FullName,
+		MonthlyTotal:   user.MonthlyPoints,
+		LastMonthTotal: user.LastMonthPoints,
+		YearlyTotal:    user.YearlyPoints,
+		LastYearTotal:  user.LastYearPoints,
+	}
+}

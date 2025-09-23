@@ -77,6 +77,14 @@ func (r *UserRepository) GetUsersSortedByPoints() ([]model.User, error) {
 	return users, nil
 }
 
+func (r *UserRepository) GetAllUsers() ([]model.User, error) {
+	var users []model.User
+	if err := r.db.Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
 func (r *UserRepository) UpdateUserPoints(user model.User) error {
 	return r.db.Model(&model.User{}).
 		Where("id = ?", user.ID).

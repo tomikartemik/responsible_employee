@@ -16,11 +16,10 @@ type TaskService struct {
 	repoUser      repository.User
 	repoMessage   repository.Message
 	repoReport    repository.Report
-    repoPointEvent repository.PointEvent
 }
 
-func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message, repoReport repository.Report, repoPointEvent repository.PointEvent) *TaskService {
-    return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage, repoReport: repoReport, repoPointEvent: repoPointEvent}
+func NewTaskService(repo repository.Task, repoViolation repository.Violation, repoUser repository.User, repoMessage repository.Message, repoReport repository.Report) *TaskService {
+	return &TaskService{repo: repo, repoViolation: repoViolation, repoUser: repoUser, repoMessage: repoMessage, repoReport: repoReport}
 }
 
 func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string, error) {
@@ -60,15 +59,12 @@ func (s *TaskService) CreateTask(task model.Task, reportedUserID string) (string
 		return "", err
 	}
 
-    user = utils.AddPoints(user, points)
-    err = s.repoUser.UpdateUserPoints(user)
+	user = utils.AddPoints(user, points)
+	err = s.repoUser.UpdateUserPoints(user)
 
 	if err != nil {
 		return "", err
 	}
-
-    // Логируем событие начисления баллов за создание задачи
-    _ = s.repoPointEvent.Create(model.PointEvent{UserID: task.ReportedUserId, Source: utils.PointsSourceCreateTask, Points: points, TaskID: &task.ID})
 
 	err = s.repoMessage.CreateMessage(model.Message{
 		UserID: task.ReportedUserId,
@@ -144,7 +140,7 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			report, err := s.repoReport.ReportByID(task.ReportID)
 			if err == nil {
 				if report.ImageUrl != "" {
-				taskForAnalise.CompletedImageUrl = "https://api.responsible-employee.xouston.com/" + report.ImageUrl
+					taskForAnalise.CompletedImageUrl = "https://api.responsible-employee.xouston.com/" + report.ImageUrl
 				}
 				if report.Comment != "" {
 					taskForAnalise.CompletedComment = report.Comment
@@ -175,14 +171,14 @@ func (s *TaskService) GetTasksWithCoordinates() ([]model.TaskWithCoordinates, er
 	for _, task := range tasks {
 		if task.Latitude != nil && task.Longitude != nil {
 			tasksWithCoords = append(tasksWithCoords, model.TaskWithCoordinates{
-				ID:            task.ID,
-				Description:   task.Description,
-				Status:        task.Status,
-				DateReported:  task.DateReported,
-				Latitude:      *task.Latitude,
-				Longitude:     *task.Longitude,
-				Violation:     task.Violation,
-				ImageUrl:      task.ImageUrl,
+				ID:           task.ID,
+				Description:  task.Description,
+				Status:       task.Status,
+				DateReported: task.DateReported,
+				Latitude:     *task.Latitude,
+				Longitude:    *task.Longitude,
+				Violation:    task.Violation,
+				ImageUrl:     task.ImageUrl,
 			})
 		}
 	}

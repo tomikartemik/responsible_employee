@@ -14,19 +14,19 @@ type Service struct {
 	Photo
 	Message
 	Question
-    Points
+	Points
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		User:      NewUserService(repos.User, repos.Task, repos.Violation),
-        Task:      NewTaskService(repos.Task, repos.Violation, repos.User, repos.Message, repos.Report, repos.PointEvent),
-        Report:    NewReportService(repos.Report, repos.Task, repos.User, repos.Message, repos.PointEvent),
+		Task:      NewTaskService(repos.Task, repos.Violation, repos.User, repos.Message, repos.Report),
+		Report:    NewReportService(repos.Report, repos.Task, repos.User, repos.Message),
 		Violation: NewViolationService(repos.Violation),
 		Photo:     NewPhotoService(repos.Task, repos.Report),
 		Message:   NewMessageService(repos.Message),
-        Question:  NewQuestionService(repos.Question, repos.User, repos.PointEvent),
-        Points:    NewPointsService(repos.User, repos.PointEvent),
+		Question:  NewQuestionService(repos.Question, repos.User),
+		Points:    NewPointsService(repos.User),
 	}
 }
 
@@ -61,8 +61,8 @@ type Violation interface {
 }
 
 type Photo interface {
-    SaveTaskPhoto(taskID string, photo *multipart.FileHeader) (string, error)
-    SaveReportPhoto(reportID string, photo *multipart.FileHeader) (string, error)
+	SaveTaskPhoto(taskID string, photo *multipart.FileHeader) (string, error)
+	SaveReportPhoto(reportID string, photo *multipart.FileHeader) (string, error)
 }
 
 type Message interface {
@@ -77,10 +77,5 @@ type Question interface {
 }
 
 type Points interface {
-    Summary(month int, year int) ([]model.UserPointsBreakdown, error)
-}
-
-// Facade helper for handlers
-func (s *Service) PointsSummary(month int, year int) ([]model.UserPointsBreakdown, error) {
-    return s.Points.Summary(month, year)
+	Summary() ([]model.UserPoints, error)
 }
