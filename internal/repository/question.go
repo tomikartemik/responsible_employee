@@ -42,11 +42,15 @@ func (r *QuestionRepository) QuestionByID(questionID int) (model.QuestionOutput,
 	}, nil
 }
 
-func (r *QuestionRepository) RandomQuestionIDs(limit int) ([]int, error) {
+func (r *QuestionRepository) RandomQuestionIDs(limit int, category string) ([]int, error) {
 	var ids []int
 
-	err := r.db.Model(&model.Question{}).
-		Select("id").
+	query := r.db.Model(&model.Question{})
+	if category != "" {
+		query = query.Where("category = ?", category)
+	}
+
+	err := query.Select("id").
 		Order("RANDOM()").
 		Limit(limit).
 		Pluck("id", &ids).Error

@@ -26,8 +26,8 @@ func (s *QuestionService) QuestionByID(questionID int) (model.QuestionOutput, er
 	return question, nil
 }
 
-func (s *QuestionService) GenerateTest() ([]model.QuestionOutput, error) {
-	questionIDs, err := s.repo.RandomQuestionIDs(10)
+func (s *QuestionService) GenerateTest(category string) ([]model.QuestionOutput, error) {
+	questionIDs, err := s.repo.RandomQuestionIDs(10, category)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,8 @@ func (h *Handler) GetQuestionById(c *gin.Context) {
 }
 
 func (h *Handler) GenerateTest(c *gin.Context) {
-	test, err := h.services.GenerateTest()
+	category := c.Query("category")
+	test, err := h.services.GenerateTest(category)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

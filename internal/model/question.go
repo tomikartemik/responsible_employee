@@ -1,8 +1,9 @@
 package model
 
 type Question struct {
-	ID   int    `gorm:"primaryKey;uniqueIndex;autoIncrement" json:"id"`
-	Text string `gorm:"not null" json:"text"`
+	ID       int    `gorm:"primaryKey;uniqueIndex;autoIncrement" json:"id"`
+	Text     string `gorm:"not null" json:"text"`
+	Category string `gorm:"not null;default:'general'" json:"category"`
 }
 
 type AnswerOption struct {
@@ -11,6 +12,7 @@ type AnswerOption struct {
 	Label      string `gorm:"type:char(1);not null" json:"label"`
 	Text       string `gorm:"not null" json:"text"`
 	IsCorrect  bool   `gorm:"not null" json:"is_correct"`
+	Category   string `gorm:"not null;default:'general'" json:"category"`
 }
 
 type QuestionOutput struct {
