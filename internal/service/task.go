@@ -133,6 +133,7 @@ func (s *TaskService) GetAllTasksForAnalise() ([]model.TaskForAnalise, error) {
 			ResponsiblePerson: responsiblePersonFullName,
 			Latitude:          task.Latitude,
 			Longitude:         task.Longitude,
+			Points:            task.Points,
 		}
 
 		// добавляем ссылку на фото о выполнении, если есть отчет с картинкой
