@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"responsible_employee/internal/model"
 	"time"
@@ -47,16 +48,35 @@ func (tc *TaskChecker) Stop() {
 func (tc *TaskChecker) checkTasks() {
 	now := time.Now()
 
-	result := tc.db.Model(&model.Task{}).
-		Where("status != ? AND end_date < ?", "Taken", now).
-		Update("status", "Passed to superiors")
-
-	if result.Error != nil {
-		log.Printf("Error updating tasks: %v", result.Error)
+	var overdueTasks []model.Task
+	err := tc.db.
+		Where("end_date < ? AND status NOT IN ?", now, []string{"Completed", "Passed to superiors"}).
+		Find(&overdueTasks).Error
+	if err != nil {
+		log.Printf("Error fetching overdue tasks: %v", err)
 		return
 	}
 
-	if result.RowsAffected > 0 {
-		log.Printf("Updated %d tasks to 'Passed to superiors' status", result.RowsAffected)
+	if len(overdueTasks) == 0 {
+		return
 	}
+
+	for _, task := range overdueTasks {
+		if err := tc.db.Model(&model.Task{}).Where("id = ?", task.ID).Update("status", "Passed to superiors").Error; err != nil {
+			log.Printf("Error updating task %s: %v", task.ID, err)
+			continue
+		}
+
+		if task.ResponsiblePersonID != "" {
+			message := model.Message{
+				UserID: task.ResponsiblePersonID,
+				Text:   fmt.Sprintf("Срок выполнения задания \"%s\" истек, задача передана руководству.", task.Description),
+			}
+			if err := tc.db.Create(&message).Error; err != nil {
+				log.Printf("Error notifying responsible user %s for task %s: %v", task.ResponsiblePersonID, task.ID, err)
+			}
+		}
+	}
+
+	log.Printf("Updated %d tasks to 'Passed to superiors' status", len(overdueTasks))
 }
